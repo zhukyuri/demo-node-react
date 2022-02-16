@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "outDir": "build",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "strictPropertyInitialization": false,
+    "module": "commonjs",
+    "target": "es2017",
+    "rootDir": "src",
+    "lib": ["es2017", "dom", "esnext.asynciterable"],
+    "baseUrl": ".",
+    "paths": {
+      "app/*": ["./src/app/*"]
+    }
+  },
+  "exclude": ["build", "node_modules"],
+  "include": ["./src", "pm2.config.js"]
+}
