@@ -17,18 +17,19 @@ class MailService {
   }
 
   async sendActivationMail(to, link) {
-    await this.transporter.sendMail({
+    const sendData = {
       from: process.env.SMTP_USER,
       to,
       subject: `Activation account to ${process.env.API_URL}`,
-      text: '',
+      text: 'text',
       html: `
         <div>
           <a href="${link}">${link}</a>
         </div>
       `,
-    })
+    }
+    await this.transporter.sendMail(sendData);
   }
 }
 
-export default new MailService();
+export default new MailService;
