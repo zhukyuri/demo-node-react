@@ -56,6 +56,10 @@ class UserService {
     return { ...tokens, user: userDto }
   }
 
+  async getAllUsers() {
+    return UserModel.find();
+  }
+
   async activate(activationLink) {
     const user = await UserModel.findOne({ activationLink })
     if (!user) throw ApiErrors.BadRequest('Bad activation link')
