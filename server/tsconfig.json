@@ -18,5 +18,5 @@
     }
   },
   "exclude": ["build", "node_modules"],
-  "include": ["./server/src", "pm2.config.js"]
+  "include": ["src"]
 }
