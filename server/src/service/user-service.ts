@@ -1,4 +1,4 @@
-import UserModel from '../models/user-model';
+import UserModel, { UserModelType } from '../models/user-model';
 import MailService from './mail-service';
 import TokenService from './token-service';
 import UserDTO from '../dto/user-dtos'
@@ -22,6 +22,24 @@ class UserService {
     await TokenService.saveToken(userDto.id, tokens.refreshToken)
 
     return { ...tokens, user: userDto }
+  }
+
+  async login(email, password) {
+    const user: UserModelType | null = await UserModel.findOne({ email })
+    if (!user) throw ApiErrors.BadRequest('>>>> User not found.');
+
+    const isPassEquals = await bcrypt.compare(password, user.password);
+    if(!isPassEquals) throw ApiErrors.BadRequest('>>> Password wrong.')
+
+    const userDto = new UserDTO(user)
+    const tokens = TokenService.generateTokens({ ...userDto })
+    await TokenService.saveToken(userDto.id, tokens.refreshToken)
+
+    return { ...tokens, user: userDto }
+  }
+
+  async logout(refreshToken) {
+    return await TokenService.removeToken(refreshToken);
   }
 
   async activate(activationLink) {

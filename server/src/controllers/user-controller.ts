@@ -1,7 +1,7 @@
-import userService from '../service/user-service';
 import UserService from '../service/user-service';
 import { validationResult } from 'express-validator';
 import ApiErrors, { ErrorsType } from '../exceptions/api-errors';
+import { nameRefreshToken } from '../configs/appConfigs';
 
 class UserController {
   async registration(req, res, next) {
@@ -12,7 +12,7 @@ class UserController {
         return next(ApiErrors.BadRequest('Validation error', arrError));
       }
       const { email, password } = req.body;
-      const userData = await userService.registration(email, password)
+      const userData = await UserService.registration(email, password)
       res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
 
       return res.json(userData)
@@ -23,7 +23,11 @@ class UserController {
 
   async login(req, res, next) {
     try {
+      const { email, password } = req.body;
+      const userData = await UserService.login(email, password);
+      res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
 
+      return res.json(userData);
     } catch (e) {
       next(e)
     }
@@ -31,7 +35,11 @@ class UserController {
 
   async logout(req, res, next) {
     try {
+      const { refreshToken } = req.cookies;
+      const token = UserService.logout(refreshToken);
+      res.clearCookie(nameRefreshToken);
 
+      return res.json(token);
     } catch (e) {
       next(e)
     }

@@ -1,3 +1,2 @@
-export const config = {
-  authTwoFactoring: false
-}
+export const authTwoFactoring = false;
+export const nameRefreshToken = 'refreshToken';
