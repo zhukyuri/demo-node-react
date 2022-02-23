@@ -29,7 +29,7 @@ class UserService {
     if (!user) throw ApiErrors.BadRequest('>>>> User not found.');
 
     const isPassEquals = await bcrypt.compare(password, user.password);
-    if(!isPassEquals) throw ApiErrors.BadRequest('>>> Password wrong.')
+    if (!isPassEquals) throw ApiErrors.BadRequest('>>> Password wrong.')
 
     const userDto = new UserDTO(user)
     const tokens = TokenService.generateTokens({ ...userDto })
@@ -40,6 +40,20 @@ class UserService {
 
   async logout(refreshToken) {
     return await TokenService.removeToken(refreshToken);
+  }
+
+  async refresh(refreshToken) {
+    if (!refreshToken) throw ApiErrors.UnauthorizedError();
+    const userData = TokenService.validateRefreshToken(refreshToken);
+    const tokenFromDB = TokenService.findToken(refreshToken);
+    if (!userData || !tokenFromDB) throw ApiErrors.UnauthorizedError();
+
+    const user = await UserModel.findById(userData.id)
+    const userDto = new UserDTO(user)
+    const tokens = TokenService.generateTokens({ ...userDto })
+    await TokenService.saveToken(userDto.id, tokens.refreshToken)
+
+    return { ...tokens, user: userDto }
   }
 
   async activate(activationLink) {
