@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 // @ts-ignore
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 import router from './src/router'
 import errorsMiddleware from './src/middlewares/error-middleware';
 
@@ -15,7 +15,10 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: process.env.CLIENT_URL,
+}));
 app.use('/api', router);
 app.use(errorsMiddleware)
 
@@ -23,9 +26,9 @@ app.use(errorsMiddleware)
 const start = async () => {
   try {
     await mongoose.connect(DB_URL);
-    app.listen( PORT, () => console.log(`Server started on PORT = ${PORT}`))
+    app.listen(PORT, () => console.log(`Server started on PORT = ${PORT}`))
   } catch (e) {
-    console.log('>>>>>> Error',e)
+    console.log('>>>>>> Error', e)
   }
 }
 
