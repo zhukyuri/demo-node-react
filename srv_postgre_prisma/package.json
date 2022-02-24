@@ -1,0 +1,33 @@
+{
+  "name": "server-demo",
+  "version": "1.0.0",
+  "description": "Server demo",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "nodemon index.ts",
+    "type-check": "tsc --noEmit"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^3.10.0",
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "express-validator": "^6.14.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.3.1",
+    "mongoose": "^6.2.1",
+    "nodemailer": "^6.7.2",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.18",
+    "nodemon": "^2.0.15",
+    "prisma": "^3.10.0"
+  }
+}
