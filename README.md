@@ -12,8 +12,8 @@
 
 ```
    + demo-node-react 
-   - + client                           // sipmple React app
-   - + server                           // Server Node, Express, MongoDB       
+   - + client                           // Sipmple React app
+   - + server                           // Simple server Node, Express, MongoDB       
    - + server_mongodb_prisma            // Server Node, MongoDB, PrismaORM      
    - + srv_postgre_typeOrm              // Server Node, PostgreSQL, TypeORM
 ```
