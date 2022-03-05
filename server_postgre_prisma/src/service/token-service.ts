@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import TokenModel from "../models/token-model"
+import db from '../orm/db'
 
 class TokenService {
 
@@ -13,37 +13,37 @@ class TokenService {
   validateAccessToken(token) {
     try {
       return jwt.verify(token, process.env.JWT_ACCESS_SECRET)
-    } catch (e){
+    } catch (e) {
       return null;
     }
   }
+
   validateRefreshToken(token) {
     try {
       return jwt.verify(token.process.env.JWT_REFRESH_SECRET)
-    } catch (e){
+    } catch (e) {
       return null;
     }
   }
 
 
-
   async saveToken(userId, refreshToken) {
-    const tokenData = await TokenModel.findOne({user: userId})
+    const tokenData = await db.tokens.findFirst({ where: { user: userId } })
     if (tokenData) {
       tokenData.refreshToken = refreshToken;
 
-      return tokenData.save()
+      return await db.tokens.update({ where: { user: userId }, data: { ...tokenData } })
     }
 
-    return TokenModel.create({ user: userId, refreshToken });
+    return await db.tokens.create({ data: { user: userId, refreshToken } });
   }
 
   async removeToken(refreshToken) {
-    return TokenModel.deleteOne({ refreshToken })
+    return await db.tokens.deleteMany({ where: { refreshToken } })
   }
 
   async findToken(refreshToken) {
-    return TokenModel.findOne({ refreshToken })
+    return await db.tokens.findFirst({ where: { refreshToken } })
   }
 }
 

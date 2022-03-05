@@ -1,4 +1,3 @@
-import UserModel, { UserModelType } from '../models/user-model';
 import MailService from './mail-service';
 import TokenService from './token-service';
 import UserDTO from '../dto/user-dtos'
@@ -15,7 +14,7 @@ class UserService {
 
     const hashPassword = await bcrypt.hash(password, 3)
     const activationLink = uuidv4();
-    const user = await db.user.create({data: { email, password: hashPassword, activationLink }})
+    const user = await db.user.create({ data: { email, password: hashPassword, activationLink } })
 
     await MailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
 
@@ -27,7 +26,7 @@ class UserService {
   }
 
   async login(email, password) {
-    const user: UserModelType | null = await UserModel.findOne({ email })
+    const user = await db.user.findFirst({ where: { email } })
     if (!user) throw ApiErrors.BadRequest('>>>> User not found.');
 
     const isPassEquals = await bcrypt.compare(password, user.password);
@@ -50,7 +49,7 @@ class UserService {
     const tokenFromDB = TokenService.findToken(refreshToken);
     if (!userData || !tokenFromDB) throw ApiErrors.UnauthorizedError();
 
-    const user = await UserModel.findById(userData.id)
+    const user = await db.user.findFirst({ where: { id: userData.id } })
     const userDto = new UserDTO(user)
     const tokens = TokenService.generateTokens({ ...userDto })
     await TokenService.saveToken(userDto.id, tokens.refreshToken)
@@ -59,15 +58,14 @@ class UserService {
   }
 
   async getAllUsers() {
-    return UserModel.find();
+    return await db.user.findMany();
   }
 
   async activate(activationLink) {
-    const user = await UserModel.findOne({ activationLink })
+    const user = await db.user.findFirst({ where: { activationLink } })
     if (!user) throw ApiErrors.BadRequest('Bad activation link')
 
-    user.isActivated = true;
-    await user.save()
+    await db.user.update({where: { activationLink }, data: {isActivated: true} })
   }
 }
 
