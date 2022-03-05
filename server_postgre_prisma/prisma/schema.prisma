@@ -9,9 +9,20 @@ datasource db {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                Int         @id @default(autoincrement())
+  email             String      @unique
+  name              String?
+  password          String
+  activationLink    String?
+  isActivated       Boolean     @default(false)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime?   @updatedAt
+}
+
+model Tokens {
+  id            Int         @id @default(autoincrement())
+  refreshToken  String      @unique
+  user          String      @unique
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime?   @updatedAt
 }

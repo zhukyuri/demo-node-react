@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "nodemon index.ts",
     "type-check": "tsc --noEmit",
-    "generateORM": "prisma generate"
+    "generateORM": "prisma generate",
+    "m:pull": "prisma db pull",
+    "m:init:dev": "prisma migrate dev --name initial-migration --create-only",
+    "m:migrate:dev": "prisma migrate dev"
   },
   "author": "",
   "license": "ISC",
