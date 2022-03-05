@@ -1,0 +1,26 @@
+{
+  "name": "server-prisma-simple",
+  "version": "1.0.0",
+  "description": "Simple server with prizma ORM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "m:pull": "prisma db pull",
+    "m:init:dev": "prisma migrate dev --name initial-migration --create-only",
+    "m:migrate:dev": "prisma migrate dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.21",
+    "prisma": "^3.10.0",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.10.0",
+    "express": "^4.17.3"
+  }
+}
