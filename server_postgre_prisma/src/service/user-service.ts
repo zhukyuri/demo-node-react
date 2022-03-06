@@ -1,6 +1,6 @@
 import MailService from './mail-service';
 import TokenService from './token-service';
-import UserDTO from '../dto/user-dtos'
+import UserDTO from '../dto/user-dto'
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import ApiErrors from '../exceptions/api-errors';
@@ -20,7 +20,7 @@ class UserService {
 
     const userDto = new UserDTO(user)
     const tokens = TokenService.generateTokens({ ...userDto })
-    await TokenService.saveToken(userDto.id, tokens.refreshToken)
+    const res_ = await TokenService.saveToken(userDto.id, tokens.refreshToken)
 
     return { ...tokens, user: userDto }
   }

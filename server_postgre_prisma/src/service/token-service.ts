@@ -28,14 +28,15 @@ class TokenService {
 
 
   async saveToken(userId, refreshToken) {
-    const tokenData = await db.tokens.findFirst({ where: { user: userId } })
+    const tokenData = await db.tokens.findFirst({ where: { userId } })
     if (tokenData) {
       tokenData.refreshToken = refreshToken;
 
-      return await db.tokens.update({ where: { user: userId }, data: { ...tokenData } })
+      // @ts-ignore
+      return await db.tokens.update({ where: { userId }, data: { refreshToken } })
     }
 
-    return await db.tokens.create({ data: { user: userId, refreshToken } });
+    return await db.tokens.create({ data: { userId, refreshToken } })
   }
 
   async removeToken(refreshToken) {
