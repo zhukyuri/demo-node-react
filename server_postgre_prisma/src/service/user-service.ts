@@ -65,7 +65,7 @@ class UserService {
     const user = await db.user.findFirst({ where: { activationLink } })
     if (!user) throw ApiErrors.BadRequest('Bad activation link')
 
-    await db.user.update({where: { activationLink }, data: {isActivated: true} })
+    await db.user.update({ where: { activationLink }, data: { isActivated: true } })
   }
 }
 
