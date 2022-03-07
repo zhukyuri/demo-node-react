@@ -8,6 +8,7 @@ import router from './src/router'
 import errorsMiddleware from './src/middlewares/error-middleware';
 
 console.log('\nCounts of processors:', os.cpus().length);
+console.log('\nCORS to:', process.env.CLIENT_URL);
 
 const PORT = process.env.PORT || 5001;
 const DB_URL = process.env.DB_URL || '';
