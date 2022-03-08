@@ -8,8 +8,13 @@ import db from '../orm/db'
 
 class UserService {
   async registration(email, password) {
+    let candidate;
+    try {
+      candidate = await db.user.findFirst({ where: { email } });
+    } catch (e) {
+      ApiErrors.CheckPrismaError(e, 'registration');
+    }
 
-    const candidate = await db.user.findFirst({ where: { email } });
     if (candidate) throw ApiErrors.BadRequest(`User already exist with email ${email}`)
 
     const hashPassword = await bcrypt.hash(password, 3)
@@ -26,7 +31,12 @@ class UserService {
   }
 
   async login(email, password) {
-    const user = await db.user.findFirst({ where: { email } })
+    let user;
+    try {
+      user = await db.user.findFirst({ where: { email } })
+    } catch (e) {
+      ApiErrors.CheckPrismaError(e, 'Login');
+    }
     if (!user) throw ApiErrors.BadRequest('>>>> User not found.');
 
     const isPassEquals = await bcrypt.compare(password, user.password);
