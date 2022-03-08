@@ -3,21 +3,21 @@ import LoginForm from './components/LoginForm';
 import { Context } from './index';
 import { localStorageTokenName } from './configs/appConfigs';
 import { observer } from 'mobx-react-lite'
-import { Button } from '@mui/material';
 import { IUser } from './models/IUser';
 import UserService from './services/UserService';
+import { Box, Button, Container, Stack } from '@mui/material';
+import TableUsers from './components/TableUsers';
 
 function App() {
   const { store } = useContext(Context)
-  // @ts-ignore
-  const [users, setUsers] = useState<IUser>([])
+  const [users, setUsers] = useState<IUser[]>([])
   const { isAuth, isLoading, user } = store;
   const header = isAuth ? `User is authorization ${user.email}` : 'Authorize, please'
 
   useEffect(() => {
     if (localStorage.getItem(localStorageTokenName)) store.setAuth(true)
     else store.setAuth(false)
-  })
+  },[])
 
   if (!isAuth) return <LoginForm />
 
@@ -26,7 +26,7 @@ function App() {
   async function getUsers() {
     try {
       const res = await UserService.getUsers();
-      // @ts-ignore
+      console.log(res.data)
       setUsers(res.data)
     } catch (e) {
       console.log(e);
@@ -34,18 +34,34 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <h1>{header}</h1>
-      <Button
-        variant="contained"
-        onClick={() => store.logout()}
-      >Log Out</Button>
-      <Button
-        variant="contained"
-        onClick={getUsers}
-      >Get Users</Button>
+    <Container maxWidth="sm">
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+          marginTop: 5
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <Stack spacing={2}>
+          <h1>{header}</h1>
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="contained"
+              onClick={() => store.logout()}
+            >Log Out</Button>
+            <Button
+              variant="contained"
+              onClick={getUsers}
+            >Get Users</Button>
+          </Stack>
 
-    </div>
+          {TableUsers(users)}
+
+        </Stack>
+      </Box>
+    </Container>
   );
 }
 
