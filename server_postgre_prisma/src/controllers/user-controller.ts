@@ -1,7 +1,7 @@
 import UserService from '../service/user-service';
 import { validationResult } from 'express-validator';
 import ApiErrors, { ErrorsType } from '../exceptions/api-errors';
-import { nameRefreshToken } from '../configs/appConfigs';
+import { ageRefreshToken, nameRefreshToken } from '../configs/appConfigs';
 
 class UserController {
   async registration(req, res, next) {
@@ -13,7 +13,7 @@ class UserController {
       }
       const { email, password } = req.body;
       const userData = await UserService.registration(email, password)
-      res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+      res.cookie('refreshToken', userData.refreshToken, { maxAge: ageRefreshToken, httpOnly: true })
 
       return res.json(userData)
     } catch (e) {
@@ -25,7 +25,7 @@ class UserController {
     try {
       const { email, password } = req.body;
       const userData = await UserService.login(email, password);
-      res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+      res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: ageRefreshToken, httpOnly: true })
 
       return res.json(userData);
     } catch (e) {
@@ -49,7 +49,7 @@ class UserController {
     try {
       const activatedLink = req.params.link;
       await UserService.activate(activatedLink);
-      return res.redirect(process.env.CLIENT_URL)
+      return res.status(200).json({ok: true}).redirect(process.env.CLIENT_URL)
     } catch (e) {
       next(e)
     }
