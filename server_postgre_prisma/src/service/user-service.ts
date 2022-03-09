@@ -4,17 +4,16 @@ import UserDTO from '../dto/user-dto'
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import ApiErrors from '../exceptions/api-errors';
-import db from '../orm/db'
+import UserOrm from '../orm/user-orm';
 
 class UserService {
   async registration(email, password) {
-
-    const candidate = await db.user.findFirst({ where: { email } });
+    const candidate = await UserOrm.ormFindFirst({ where: { email } });
     if (candidate) throw ApiErrors.BadRequest(`User already exist with email ${email}`)
 
     const hashPassword = await bcrypt.hash(password, 3)
     const activationLink = uuidv4();
-    const user = await db.user.create({ data: { email, password: hashPassword, activationLink } })
+    const user = await UserOrm.ormCreate({ data: { email, password: hashPassword, activationLink } })
 
     await MailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
 
@@ -26,7 +25,7 @@ class UserService {
   }
 
   async login(email, password) {
-    const user = await db.user.findFirst({ where: { email } })
+    const user = await UserOrm.ormFindFirst({ where: { email } })
     if (!user) throw ApiErrors.BadRequest('>>>> User not found.');
 
     const isPassEquals = await bcrypt.compare(password, user.password);
@@ -49,7 +48,7 @@ class UserService {
     const tokenFromDB = TokenService.findToken(refreshToken);
     if (!userData || !tokenFromDB) throw ApiErrors.UnauthorizedError();
 
-    const user = await db.user.findFirst({ where: { id: userData.id } })
+    const user = await UserOrm.ormFindFirst({ where: { id: userData.id } })
     const userDto = new UserDTO(user)
     const tokens = TokenService.generateTokens({ ...userDto })
     await TokenService.saveToken(userDto.id, tokens.refreshToken)
@@ -58,14 +57,14 @@ class UserService {
   }
 
   async getAllUsers() {
-    return await db.user.findMany();
+    return await UserOrm.ormFindMany({});
   }
 
   async activate(activationLink) {
-    const user = await db.user.findFirst({ where: { activationLink } })
+    const user = await UserOrm.ormFindFirst({ where: { activationLink } })
     if (!user) throw ApiErrors.BadRequest('Bad activation link')
 
-    await db.user.update({ where: { activationLink }, data: { isActivated: true } })
+    await UserOrm.ormUpdate({ where: { activationLink }, data: { isActivated: true } })
   }
 }
 
