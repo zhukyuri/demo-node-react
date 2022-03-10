@@ -19,6 +19,7 @@ const LoginForm: FC = () => {
         noValidate
         autoComplete="off"
       >
+        {process.env.REACT_APP_DEFAULT_EMAIL}
         <Stack spacing={2}>
           <TextField
             id="email"

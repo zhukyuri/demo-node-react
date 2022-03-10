@@ -12,7 +12,7 @@ function App() {
   const { store } = useContext(Context)
   const [users, setUsers] = useState<IUser[]>([])
   const { isAuth, isLoading, user } = store;
-  const header = isAuth ? `User is authorization ${user.email}` : 'Authorize, please'
+  const header = isAuth ? `User is authorized ${user.email}` : 'Authorize, please'
 
   useEffect(() => {
     if (localStorage.getItem(localStorageTokenName)) store.setAuth(true)

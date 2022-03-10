@@ -2,9 +2,6 @@ import { IUser } from '../models/IUser';
 import { makeAutoObservable } from 'mobx';
 import AuthService from '../services/AuthService';
 import { localStorageTokenName } from '../configs/appConfigs';
-import axios from 'axios';
-
-const API_URL = 'http://localhost:5001/api'
 
 export default class Store {
   user = {} as IUser;
@@ -30,7 +27,6 @@ export default class Store {
   async login(email: string, password: string) {
     try {
       const response = await AuthService.login(email, password);
-      console.log('Login >>>', response);
       localStorage.setItem(localStorageTokenName, response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);

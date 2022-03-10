@@ -1,7 +1,7 @@
 import UserService from '../service/user-service';
 import { validationResult } from 'express-validator';
 import ApiErrors, { ErrorsType } from '../exceptions/api-errors';
-import { ageRefreshToken, nameRefreshToken } from '../configs/appConfigs';
+import { expiresRefreshToken, nameRefreshToken } from '../configs/appConfigs';
 
 class UserController {
   async registration(req, res, next) {
@@ -13,7 +13,7 @@ class UserController {
       }
       const { email, password } = req.body;
       const userData = await UserService.registration(email, password)
-      res.cookie('refreshToken', userData.refreshToken, { maxAge: ageRefreshToken, httpOnly: true })
+      res.cookie('refreshToken', userData.refreshToken, { maxAge: expiresRefreshToken, httpOnly: true })
 
       return res.json(userData)
     } catch (e) {
@@ -25,7 +25,7 @@ class UserController {
     try {
       const { email, password } = req.body;
       const userData = await UserService.login(email, password);
-      res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: ageRefreshToken, httpOnly: true })
+      res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: expiresRefreshToken, httpOnly: true })
 
       return res.json(userData);
     } catch (e) {
