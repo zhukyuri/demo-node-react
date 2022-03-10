@@ -1,10 +1,12 @@
 import MailService from './mail-service';
-import TokenService from './token-service';
+import TokenService from './token-redis-service';
 import UserDTO from '../dto/user-dto'
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import ApiErrors from '../exceptions/api-errors';
 import UserOrm from '../orm/user-orm';
+import redis from '../redis/redis-cli';
+import { expiresRefreshToken } from '../configs/appConfigs';
 
 class UserService {
   async registration(email, password) {
@@ -19,21 +21,21 @@ class UserService {
 
     const userDto = new UserDTO(user)
     const tokens = TokenService.generateTokens({ ...userDto })
-    const res_ = await TokenService.saveToken(userDto.id, tokens.refreshToken)
+    const res_ = await TokenService.saveToken(tokens.refreshToken, expiresRefreshToken)
 
     return { ...tokens, user: userDto }
   }
 
   async login(email, password) {
     const user = await UserOrm.ormFindFirst({ where: { email } })
-    if (!user) throw ApiErrors.BadRequest('>>>> User not found.');
+    if (!user) throw ApiErrors.BadRequest('User not found.');
 
     const isPassEquals = await bcrypt.compare(password, user.password);
-    if (!isPassEquals) throw ApiErrors.BadRequest('>>> Password wrong.')
+    if (!isPassEquals) throw ApiErrors.BadRequest('Password wrong.')
 
     const userDto = new UserDTO(user)
     const tokens = TokenService.generateTokens({ ...userDto })
-    await TokenService.saveToken(userDto.id, tokens.refreshToken)
+    await TokenService.saveToken(tokens.refreshToken, expiresRefreshToken)
 
     return { ...tokens, user: userDto }
   }
@@ -51,7 +53,7 @@ class UserService {
     const user = await UserOrm.ormFindFirst({ where: { id: userData.id } })
     const userDto = new UserDTO(user)
     const tokens = TokenService.generateTokens({ ...userDto })
-    await TokenService.saveToken(userDto.id, tokens.refreshToken)
+    await TokenService.saveToken(tokens.refreshToken, expiresRefreshToken)
 
     return { ...tokens, user: userDto }
   }
