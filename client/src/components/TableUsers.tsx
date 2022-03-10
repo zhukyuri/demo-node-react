@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Checkbox from '@mui/material/Checkbox';
 import { IUser } from '../models/IUser'
 
 export default function TableUsers(users: IUser[]) {
@@ -31,7 +32,7 @@ export default function TableUsers(users: IUser[]) {
               <TableCell component="th" scope="row">{row.id}</TableCell>
               <TableCell align="right">{row.name}</TableCell>
               <TableCell align="right">{row.email}</TableCell>
-              <TableCell align="right">{row.isActivated}</TableCell>
+              <TableCell align="right"><Checkbox checked={row.isActivated}/></TableCell>
               <TableCell align="right">{row.createdAt}</TableCell>
               <TableCell align="right">{row.updatedAt}</TableCell>
             </TableRow>
