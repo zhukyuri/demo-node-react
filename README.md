@@ -14,11 +14,11 @@ Front-End Client is a simple ReactJS application.
 + demo-node-react
 - + client                           // Sipmple React app
 - + server-mongo-simple              // Simple server Node, Express, MongoDB
-- + server_postgre_prisma-simple     // Server Node, PostgreSQL, PrismaORM
-- + server_postgre_prisma            // Server Node, PostgreSQL, PrismaORM, Redis
-- + server_graphql_typeOrm           // -- In progress
-- + server_nest                      // -- In progress
-- + server_go                        // -- In progress
+- + server-postgre-prisma-simple     // Server Node, PostgreSQL, PrismaORM
+- + server-postgre-prisma            // Server Node, PostgreSQL, PrismaORM, Redis
+- + server-graphql-typeOrm           // -- In progress
+- + server-nest                      // -- In progress
+- + server-go                        // -- In progress
 ```
 
 - ## /client
@@ -27,23 +27,6 @@ Front-End Client is a simple ReactJS application.
     - MobX
     - Material UI
     - axios
-    - TypeScript
-
-- ## /server-mongo-simple
-  - Simple Server
-    - Node
-    - express
-    - JWT token
-    - mongo DB
-    - cookie
-    - TypeScript
-
-- ## /server-postgre-prisma-simple
-  - Simple Server
-    - Node
-    - express
-    - PostgreSQL
-    - Prisma ORM
     - TypeScript
 
 - ## /server-postgre-prisma
@@ -63,7 +46,23 @@ Front-End Client is a simple ReactJS application.
   - Models
   - Services
   - DTO
-  
+
+- ## /server-mongo-simple
+  - Simple Server
+    - Node
+    - express
+    - JWT token
+    - mongo DB
+    - cookie
+    - TypeScript
+
+- ## /server-postgre-prisma-simple
+  - Simple Server
+    - Node
+    - express
+    - PostgreSQL
+    - Prisma ORM
+    - TypeScript
 
 - ## /server-graphql-typeOrm
   - In progress
