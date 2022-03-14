@@ -10,6 +10,7 @@ router.post('/registration',
   body('password').isLength({ min: 3, max: 32 }),
   UserController.registration);
 router.post('/login', UserController.login);
+router.delete('/delete/:userId', UserController.delete);
 router.post('/logout', UserController.logout);
 router.get('/activate/:link', UserController.activate);
 router.get('/refresh', UserController.refresh);

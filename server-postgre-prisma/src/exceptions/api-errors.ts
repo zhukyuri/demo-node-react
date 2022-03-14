@@ -20,7 +20,7 @@ export default class ApiErrors extends Error {
   }
 
   static UnauthorizedError(): ApiErrorType {
-    return new ApiErrors(404, '>>> User unauthorized.');
+    return new ApiErrors(401, '>>> User unauthorized.');
   }
 
   static BadRequest(message, errors: ErrorsType = []): ApiErrorType {

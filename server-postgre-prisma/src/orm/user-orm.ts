@@ -6,7 +6,7 @@ export default class UserOrm {
     try {
       return await db.user.findFirst(options);
     } catch (e) {
-      ApiErrors.CheckPrismaError(e, 'user.findFirst');
+      throw ApiErrors.CheckPrismaError(e, 'user.findFirst');
     }
   }
 
@@ -14,7 +14,7 @@ export default class UserOrm {
     try {
       return await db.user.findMany(options);
     } catch (e) {
-      ApiErrors.CheckPrismaError(e, 'user.findMany');
+      throw ApiErrors.CheckPrismaError(e, 'user.findMany');
     }
   }
 
@@ -26,11 +26,19 @@ export default class UserOrm {
     }
   }
 
+ static async ormDelete(options) {
+    try {
+      return await db.user.delete(options);
+    } catch (e) {
+      throw ApiErrors.CheckPrismaError(e, 'user.delete');
+    }
+  }
+
  static async ormUpdate(options) {
     try {
       return await db.user.update(options);
     } catch (e) {
-      ApiErrors.CheckPrismaError(e, 'user.update');
+      throw ApiErrors.CheckPrismaError(e, 'user.update');
     }
   }
 }

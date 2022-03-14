@@ -4,13 +4,13 @@ import TokenService from '../service/token-redis-service';
 export default function (req, res, next) {
   try {
     const headerAuthorization = req.headers.authorization;
-    if (!headerAuthorization) next(ApiErrors.UnauthorizedError());
+    if (!headerAuthorization) return next(ApiErrors.UnauthorizedError());
 
     const accessToken = headerAuthorization.split(' ')[1]
-    if (!accessToken) next(ApiErrors.UnauthorizedError());
+    if (!accessToken) return next(ApiErrors.UnauthorizedError());
 
     const userData = TokenService.validateAccessToken(accessToken);
-    if (!userData) next(ApiErrors.UnauthorizedError());
+    if (!userData) return next(ApiErrors.UnauthorizedError());
 
     req.user = userData;
     next();
