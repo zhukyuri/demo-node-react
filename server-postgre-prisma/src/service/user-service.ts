@@ -5,8 +5,18 @@ import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import ApiErrors from '../exceptions/api-errors';
 import UserOrm from '../orm/user-orm';
-import redis from '../redis/redis-cli';
-import { expiresRefreshToken } from '../configs/appConfigs';
+import { expiresAccessToken, expiresRefreshToken } from '../configs/appConfigs';
+
+export type IUserID = number;
+
+export interface IUser {
+  id: IUserID;
+  email: string;
+  name?: string;
+  isActivated: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 class UserService {
   async registration(email, password) {
@@ -36,8 +46,13 @@ class UserService {
     const userDto = new UserDTO(user)
     const tokens = TokenService.generateTokens({ ...userDto })
     await TokenService.saveToken(tokens.refreshToken, expiresRefreshToken)
+    await TokenService.saveToken(tokens.accessToken, expiresAccessToken)
 
     return { ...tokens, user: userDto }
+  }
+
+  async delete(userId: IUserID) {
+    return await UserOrm.ormDelete({ where: { id: userId} })
   }
 
   async logout(refreshToken) {

@@ -1,6 +1,6 @@
 import UserService from '../service/user-service';
 import { validationResult } from 'express-validator';
-import ApiErrors, { ErrorsType } from '../exceptions/api-errors';
+import ApiErrors, { ApiErrorType, ErrorsType } from '../exceptions/api-errors';
 import { expiresRefreshToken, nameRefreshToken } from '../configs/appConfigs';
 
 class UserController {
@@ -13,7 +13,7 @@ class UserController {
       }
       const { email, password } = req.body;
       const userData = await UserService.registration(email, password)
-      res.cookie('refreshToken', userData.refreshToken, { maxAge: expiresRefreshToken, httpOnly: true })
+      res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: expiresRefreshToken, httpOnly: true })
 
       return res.json(userData)
     } catch (e) {
@@ -33,10 +33,27 @@ class UserController {
     }
   }
 
+  async delete(req, res, next) {
+    try {
+      const {params, cookies, query} = req;
+      const userId = params.userId * 1;
+      const { refreshToken } = cookies;
+      res.clearCookie(nameRefreshToken)
+      try {
+        const userData = await UserService.delete(userId);
+        return res.status(200).json({delete: "Ok"}).redirect(process.env.CLIENT_URL);
+      } catch (e) {
+        return res.status(400).json({delete: `User by id=${userId} not found`}).redirect(process.env.CLIENT_URL);
+      }
+    } catch (e) {
+      next(e)
+    }
+  }
+
   async logout(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
-      const token = UserService.logout(refreshToken);
+      const token = await UserService.logout(refreshToken);
       res.clearCookie(nameRefreshToken);
 
       return res.json(token);
@@ -49,7 +66,7 @@ class UserController {
     try {
       const activatedLink = req.params.link;
       await UserService.activate(activatedLink);
-      return res.status(200).json({ok: true}).redirect(process.env.CLIENT_URL)
+      return res.status(200).json({ok: true}).redirect(process.env.CLIENT_URL);
     } catch (e) {
       next(e)
     }
@@ -59,7 +76,7 @@ class UserController {
     try {
       const { refreshToken } = req.cookies;
       const userData = await UserService.refresh(refreshToken);
-      res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+      res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: expiresRefreshToken, httpOnly: true })
 
       return res.json(userData);
     } catch (e) {
