@@ -3,7 +3,7 @@ import LoginForm from './components/LoginForm';
 import { Context } from './index';
 import { localStorageTokenName } from './configs/appConfigs';
 import { observer } from 'mobx-react-lite'
-import { IUser } from './models/IUser';
+import { IUser, IUserID } from './models/IUser';
 import UserService from './services/UserService';
 import { Box, Button, Container, Stack } from '@mui/material';
 import TableUsers from './components/TableUsers';
@@ -15,8 +15,9 @@ function App() {
   const header = isAuth ? `User is authorized ${user.email}` : 'Authorize, please'
 
   useEffect(() => {
-    if (localStorage.getItem(localStorageTokenName)) store.setAuth(true)
-    else store.setAuth(false)
+    if (localStorage.getItem(localStorageTokenName)) {
+      store.checkAuth()
+    }
   },[])
 
   if (!isAuth) return <LoginForm />
@@ -26,12 +27,12 @@ function App() {
   async function getUsers() {
     try {
       const res = await UserService.getUsers();
-      console.log(res.data)
       setUsers(res.data)
     } catch (e) {
       console.log(e);
     }
   }
+
 
   return (
     <Container maxWidth="sm">
@@ -55,6 +56,10 @@ function App() {
               variant="contained"
               onClick={getUsers}
             >Get Users</Button>
+            <Button
+              variant="contained"
+              onClick={() => store.removeUser()}
+            >Delete User</Button>
           </Stack>
 
           {TableUsers(users)}

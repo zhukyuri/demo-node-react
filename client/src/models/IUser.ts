@@ -1,5 +1,7 @@
+export type IUserID = number;
+
 export interface IUser {
-  id: string;
+  id: IUserID;
   email: string;
   name?: string;
   isActivated: boolean;
