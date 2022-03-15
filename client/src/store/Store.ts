@@ -58,6 +58,7 @@ export default class Store {
   async logout() {
     try {
       const response = AuthService.logout();
+      // TODO check errors
       LocalToken.remove();
       this.setAuth(false);
       this.setUser({} as IUser);
@@ -85,6 +86,7 @@ export default class Store {
   async removeUser() {
     try {
       const response = await UserService.deleteUser(this.user.id);
+      // TODO check errors
       LocalToken.remove();
     } catch (e) {
       console.log(e);
