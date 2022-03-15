@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import LoginForm from './components/LoginForm';
 import { Context } from './index';
 import { observer } from 'mobx-react-lite'
 import { IUser } from './models/IUser';
@@ -7,6 +6,8 @@ import UserService from './services/UserService';
 import { Box, Button, Container, Stack } from '@mui/material';
 import TableUsers from './components/TableUsers';
 import LocalToken from './services/LocalToken';
+import LoginFormFormik from './components/LoginFormFormik';
+import MenuAppBar from './components/MenuAppBar';
 
 function App() {
   const { store } = useContext(Context)
@@ -20,8 +21,6 @@ function App() {
     }
   }, [])
 
-  if (!isAuth) return <LoginForm />
-
   if (isLoading) return <div>Loading ...</div>
 
   async function getUsers() {
@@ -33,17 +32,15 @@ function App() {
     }
   }
 
-
   return (
-    <Container maxWidth="sm">
-      <Box
-        component="form"
+    <Container maxWidth="xl">
+      <MenuAppBar />
+      {!isAuth && <LoginFormFormik />}
+      {isAuth && <Box
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
           marginTop: 5
         }}
-        noValidate
-        autoComplete="off"
       >
         <Stack spacing={2}>
           <h1>{header}</h1>
@@ -66,6 +63,7 @@ function App() {
 
         </Stack>
       </Box>
+      }
     </Container>
   );
 }
