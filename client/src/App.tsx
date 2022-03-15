@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import LoginForm from './components/LoginForm';
 import { Context } from './index';
-import { localStorageTokenName } from './configs/appConfigs';
 import { observer } from 'mobx-react-lite'
-import { IUser, IUserID } from './models/IUser';
+import { IUser } from './models/IUser';
 import UserService from './services/UserService';
 import { Box, Button, Container, Stack } from '@mui/material';
 import TableUsers from './components/TableUsers';
+import LocalToken from './services/LocalToken';
 
 function App() {
   const { store } = useContext(Context)
@@ -15,10 +15,10 @@ function App() {
   const header = isAuth ? `User is authorized ${user.email}` : 'Authorize, please'
 
   useEffect(() => {
-    if (localStorage.getItem(localStorageTokenName)) {
+    if (LocalToken.read()) {
       store.checkAuth()
     }
-  },[])
+  }, [])
 
   if (!isAuth) return <LoginForm />
 

@@ -1,8 +1,7 @@
 import axios from 'axios'
-import { localStorageTokenName } from '../configs/appConfigs';
 import { AuthResponse } from '../models/response/AuthResponse';
-import Store from '../store/Store';
 import { store } from '../index';
+import LocalToken from '../services/LocalToken';
 
 const api = axios.create({
   withCredentials: true,
@@ -11,7 +10,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   // @ts-ignore
-  config.headers.Authorization = `Bearer ${localStorage.getItem(localStorageTokenName)}`
+  config.headers.Authorization = `Bearer ${LocalToken.read()}`
 
   return config;
 })
@@ -25,7 +24,7 @@ api.interceptors.response.use((config) => {
     try {
       const response = await axios.get<AuthResponse>(`${process.env.REACT_APP_API_URL}/refresh`, { withCredentials: true })
       if (!response) {store.setAuth(false)}
-      localStorage.setItem(localStorageTokenName, response.data.accessToken);
+      LocalToken.save(response.data.accessToken);
       return api.request(originalRequest);
     } catch (e) {
       console.log('Not Authorized')
