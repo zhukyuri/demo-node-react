@@ -1,10 +1,10 @@
 import { IUser } from '../models/IUser';
 import { makeAutoObservable } from 'mobx';
 import AuthService from '../services/AuthService';
-import { localStorageTokenName } from '../configs/appConfigs';
 import { AuthResponse } from '../models/response/AuthResponse';
 import axios from 'axios';
 import UserService from '../services/UserService';
+import LocalToken from '../services/LocalToken';
 
 export default class Store {
   user = {} as IUser;
@@ -34,8 +34,7 @@ export default class Store {
   async login(email: string, password: string) {
     try {
       const response = await AuthService.login(email, password);
-      console.log(response); // TODO
-      localStorage.setItem(localStorageTokenName, response.data.accessToken);
+      LocalToken.save(response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
@@ -47,8 +46,7 @@ export default class Store {
   async registration(email: string, password: string) {
     try {
       const response = await AuthService.registration(email, password);
-      console.log(response); // TODO
-      localStorage.setItem(localStorageTokenName, response.data.accessToken);
+      LocalToken.save(response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
@@ -60,8 +58,7 @@ export default class Store {
   async logout() {
     try {
       const response = AuthService.logout();
-      console.log(response); // TODO
-      localStorage.removeItem(localStorageTokenName);
+      LocalToken.remove();
       this.setAuth(false);
       this.setUser({} as IUser);
     } catch (e) {
@@ -74,8 +71,7 @@ export default class Store {
     this.setLoading(true);
     try {
       const response = await axios.get<AuthResponse>(`${process.env.REACT_APP_API_URL}/refresh`, { withCredentials: true })
-      console.log(response); // TODO
-      localStorage.setItem(localStorageTokenName, response.data.accessToken);
+      LocalToken.save(response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
@@ -89,8 +85,7 @@ export default class Store {
   async removeUser() {
     try {
       const response = await UserService.deleteUser(this.user.id);
-      console.log(response); // TODO
-      localStorage.removeItem(localStorageTokenName);
+      LocalToken.remove();
     } catch (e) {
       console.log(e);
     }
