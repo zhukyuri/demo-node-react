@@ -1,11 +1,16 @@
+import React, { useContext } from 'react';
 import { Formik, FormikValues } from 'formik';
 import * as yup from 'yup';
-import { Box, Button, Container, Link, Stack, TextField } from '@mui/material';
-import { AuthStatus } from '../store/Store';
-import React, { useContext } from 'react';
+import { Box, Button, Container, Link, Stack, TextField, Typography } from '@mui/material';
 import { Context } from '../index';
+import { AuthStatus } from '../store/Store';
 
 const validationSchema = yup.object({
+  username: yup
+    .string()
+    .min(5, 'Username should be of minimum 5 characters length')
+    .max(10, 'Username should be of maximum 10 characters length')
+    .required('Email is required'),
   email: yup
     .string()
     .email('Enter a valid email')
@@ -20,32 +25,32 @@ const validationSchema = yup.object({
 const initialValues = {
   email: process.env.REACT_APP_DEFAULT_EMAIL,
   password: process.env.REACT_APP_DEFAULT_PASSWORD,
+  username: process.env.REACT_APP_DEFAULT_USERNAME,
 }
 
-const LoginFormFormik = () => {
-  const { store } = useContext(Context)
+const RegistrationFormFormik = () => {
+  const { store } = useContext(Context);
 
-  const handleSetRegistration = () => {
-    store.setAuthStatus(AuthStatus.RegistrationForm)
+  const handleRegistration = async (values: FormikValues) => {
+    await store.login(values.email, values.password)
   }
 
-  const handleLogin = async (values: FormikValues) => {
-    await store.login(values.email, values.password)
+  const handleSetLoginForm = () => {
+    store.setAuthStatus(AuthStatus.LoginForm);
   }
 
   return (
     <Container maxWidth="sm">
       <Box
-        component="div"
         sx={{
-          marginTop: 10,
           '& .MuiTextField-root': { m: 1, width: 300 },
+          marginTop: 10,
         }}
       >
-        <h1>Login Form</h1>
+        <h1>Registration Form</h1>
         <Formik
           initialValues={initialValues}
-          onSubmit={handleLogin}
+          onSubmit={handleRegistration}
           validationSchema={validationSchema}
         >
           {({
@@ -66,6 +71,18 @@ const LoginFormFormik = () => {
             return (
               <form>
                 <Stack spacing={2}>
+                  <TextField
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    id="username"
+                    name="username"
+                    label="Username"
+                    value={values.username}
+                    onChange={handleChange}
+                    error={touched.username && Boolean(errors.username)}
+                    helperText={touched.username && errors.username || ' '}
+                  />
                   <TextField
                     variant="outlined"
                     size="small"
@@ -98,12 +115,12 @@ const LoginFormFormik = () => {
                     color="primary"
                     variant="contained"
                     disabled={!isValid}
-                    onClick={() => handleLogin(values)}
-                  >Login</Button>
+                    onClick={() => handleRegistration(values)}
+                  >Registration</Button>
                   <Link
                     component="button"
-                    onClick={handleSetRegistration}
-                  >Registration Form</Link>
+                    onClick={handleSetLoginForm}
+                  >Login Form</Link>
                 </Stack>
               </form>
             )
@@ -114,4 +131,4 @@ const LoginFormFormik = () => {
   );
 };
 
-export default LoginFormFormik;
+export default RegistrationFormFormik;

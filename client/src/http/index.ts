@@ -2,6 +2,7 @@ import axios from 'axios'
 import { AuthResponse } from '../models/response/AuthResponse';
 import { store } from '../index';
 import LocalToken from '../services/LocalToken';
+import { AuthStatus } from '../store/Store';
 
 const api = axios.create({
   withCredentials: true,
@@ -23,7 +24,7 @@ api.interceptors.response.use((config) => {
     originalRequest._isRetry = true;
     try {
       const response = await axios.get<AuthResponse>(`${process.env.REACT_APP_API_URL}/refresh`, { withCredentials: true })
-      if (!response) {store.setAuth(false)}
+      if (!response) {store.setAuthStatus(AuthStatus.LoginForm)}
       LocalToken.save(response.data.accessToken);
       return api.request(originalRequest);
     } catch (e) {
