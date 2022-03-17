@@ -11,13 +11,10 @@ const LoginForm: FC = () => {
   return (
     <Container maxWidth="sm">
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
           marginTop: 5
         }}
-        noValidate
-        autoComplete="off"
       >
         {process.env.REACT_APP_DEFAULT_EMAIL}
         <Stack spacing={2}>
