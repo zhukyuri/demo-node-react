@@ -11,9 +11,8 @@ class MailService {
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD,
-      }
-    })
-
+      },
+    });
   }
 
   async sendActivationMail(to, link) {
@@ -24,10 +23,10 @@ class MailService {
       text: 'text',
       html: `
         <div>
-          <a href="${link}">${link}</a>
+          <a href='${link}'>${link}</a>
         </div>
       `,
-    }
+    };
     await this.transporter.sendMail(sendData);
   }
 }
