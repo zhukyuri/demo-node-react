@@ -24,11 +24,12 @@ api.interceptors.response.use((config) => {
     originalRequest._isRetry = true;
     try {
       const response = await axios.get<AuthResponse>(`${process.env.REACT_APP_API_URL}/refresh`, { withCredentials: true })
-      if (!response) {store.setAuthStatus(AuthStatus.LoginForm)}
-      LocalToken.save(response.data.accessToken);
+      if (!response) store.setAuthStatus(AuthStatus.LoginForm)
+      LocalToken.save(response.data.token);
       return api.request(originalRequest);
     } catch (e) {
       console.log('Not Authorized')
+      store.setAuthStatus(AuthStatus.LoginForm)
     }
   }
   throw error;

@@ -19,7 +19,7 @@ interface Props {
 
 function MenuAppBar({ removeUser, logout, user }: Props) {
   const [anchorMenu, setAnchorMenu] = React.useState<null | HTMLElement>(null);
-  const userName = !user.name ? user.email : user.name; // TODO
+  const userName = !user.username ? user.email : user.username; // TODO
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorMenu(event.currentTarget);
   };

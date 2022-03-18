@@ -37,7 +37,7 @@ export default class Store {
     try {
       const response = await AuthService.login(email, password);
       //  TODO implementation logic <if error login>
-      LocalToken.save(response.data.accessToken);
+      LocalToken.save(response.data.token);
       this.setAuthStatus(AuthStatus.Authorized);
       this.setUser(response.data.user);
     } catch (e) {
@@ -49,7 +49,7 @@ export default class Store {
   registration = async (email: string, password: string, username: string) => {
     try {
       const response = await AuthService.registration(email, password, username);
-      LocalToken.save(response.data.accessToken);
+      LocalToken.save(response.data.token);
       this.setAuthStatus(AuthStatus.Authorized);
       this.setUser(response.data.user);
     } catch (e) {
@@ -77,7 +77,7 @@ export default class Store {
     try {
       const response = await axios.get<AuthResponse>(`${process.env.REACT_APP_API_URL}/refresh`, { withCredentials: true })
       //  TODO implementation logic <if error refresh>
-      LocalToken.save(response.data.accessToken);
+      LocalToken.save(response.data.token);
       this.setAuthStatus(AuthStatus.Authorized);
       this.setUser(response.data.user);
     } catch (e) {

@@ -17,7 +17,7 @@ export default function TableUsers(users: IUser[]) {
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
-            <TableCell align="right">Name</TableCell>
+            <TableCell align="right">Username</TableCell>
             <TableCell align="right">Email</TableCell>
             <TableCell align="right">Activated</TableCell>
             <TableCell align="right">Update</TableCell>
@@ -31,11 +31,11 @@ export default function TableUsers(users: IUser[]) {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">{row.id}</TableCell>
-              <TableCell align="right">{row.name}</TableCell>
+              <TableCell align="right">{row.username}</TableCell>
               <TableCell align="right">{row.email}</TableCell>
               <TableCell align="right"><Checkbox checked={row.isActivated}/></TableCell>
-              <TableCell align="right">{moment(row.createdAt).format("DD/MM/YY")}</TableCell>
-              <TableCell align="right">{moment(row.updatedAt).format("DD/MM/YY")}</TableCell>
+              <TableCell align="right">{moment(row.createdAt).format("DD/MM/YYYY")}</TableCell>
+              <TableCell align="right">{moment(row.updatedAt).format("DD/MM/YYYY")}</TableCell>
             </TableRow>
           ))}
         </TableBody>
