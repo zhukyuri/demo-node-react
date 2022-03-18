@@ -41,6 +41,21 @@ class UserController {
     }
   }
 
+  async refresh(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+      const userData = await UserService.refresh(refreshToken);
+      res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: expiresRefreshToken, httpOnly: true })
+
+      return res.json({
+        ...new TokenDto(userData),
+        user: new UserDto({...userData.user})
+      });
+    } catch (e) {
+      next(e)
+    }
+  }
+
   async delete(req, res, next) {
     try {
       const {params, cookies, query} = req;
@@ -75,18 +90,6 @@ class UserController {
       const activatedLink = req.params.link;
       await UserService.activate(activatedLink);
       return res.status(200).json({ok: true}).redirect(process.env.CLIENT_URL);
-    } catch (e) {
-      next(e)
-    }
-  }
-
-  async refresh(req, res, next) {
-    try {
-      const { refreshToken } = req.cookies;
-      const userData = await UserService.refresh(refreshToken);
-      res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: expiresRefreshToken, httpOnly: true })
-
-      return res.json(userData);
     } catch (e) {
       next(e)
     }
