@@ -9,29 +9,32 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Button } from '@mui/material';
-import { useContext } from 'react';
-import { Context } from '../index';
+import { IUser } from '../models/IUser';
 
-function MenuAppBar() {
-  const { store } = useContext(Context)
+interface Props {
+  removeUser: () => Promise<void>;
+  logout: () => Promise<void>;
+  user: IUser;
+}
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
+function MenuAppBar({ removeUser, logout, user }: Props) {
+  const [anchorMenu, setAnchorMenu] = React.useState<null | HTMLElement>(null);
+  const userName = !user.username ? user.email : user.username; // TODO
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorMenu(event.currentTarget);
   };
 
   const handleCloseMenu = () => {
-    setAnchorEl(null);
+    setAnchorMenu(null);
   };
 
   const handleRemoveAccount = () => {
-    store.removeUser();
+    removeUser();
     handleCloseMenu();
   }
 
   const handleLogOut = () => {
-    store.logout();
+    logout();
     handleCloseMenu()
   }
 
@@ -51,7 +54,7 @@ function MenuAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             App
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Typography>{userName}</Typography>
           <div>
             <IconButton
               size="large"
@@ -65,7 +68,7 @@ function MenuAppBar() {
             </IconButton>
             <Menu
               id="menu-appbar"
-              anchorEl={anchorEl}
+              anchorEl={anchorMenu}
               anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
@@ -75,7 +78,7 @@ function MenuAppBar() {
                 vertical: 'top',
                 horizontal: 'right',
               }}
-              open={Boolean(anchorEl)}
+              open={Boolean(anchorMenu)}
               onClose={handleCloseMenu}
             >
               <MenuItem onClick={handleRemoveAccount}>Remove Account</MenuItem>

@@ -12,20 +12,20 @@ export type IUserID = number;
 export interface IUser {
   id: IUserID;
   email: string;
-  name?: string;
+  username: string;
   isActivated: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
 class UserService {
-  async registration(email, password) {
+  async registration(email, password, username) {
     const candidate = await UserOrm.ormFindFirst({ where: { email } });
     if (candidate) throw ApiErrors.BadRequest(`User already exist with email ${email}`)
 
     const hashPassword = await bcrypt.hash(password, 3)
     const activationLink = uuidv4();
-    const user = await UserOrm.ormCreate({ data: { email, password: hashPassword, activationLink } })
+    const user = await UserOrm.ormCreate({ data: { email, username, password: hashPassword, activationLink } })
 
     await MailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
 
@@ -52,7 +52,7 @@ class UserService {
   }
 
   async delete(userId: IUserID) {
-    return await UserOrm.ormDelete({ where: { id: userId} })
+    return await UserOrm.ormDelete({ where: { id: userId } })
   }
 
   async logout(refreshToken) {
@@ -74,7 +74,16 @@ class UserService {
   }
 
   async getAllUsers() {
-    return await UserOrm.ormFindMany({});
+    return await UserOrm.ormFindMany({
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        isActivated: true,
+        createdAt: true,
+        updatedAt: true,
+      }
+    });
   }
 
   async activate(activationLink) {

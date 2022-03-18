@@ -2,6 +2,8 @@ import UserService from '../service/user-service';
 import { validationResult } from 'express-validator';
 import ApiErrors, { ApiErrorType, ErrorsType } from '../exceptions/api-errors';
 import { expiresRefreshToken, nameRefreshToken } from '../configs/appConfigs';
+import TokenDto from '../dto/token-dto';
+import UserDto from '../dto/user-dto';
 
 class UserController {
   async registration(req, res, next) {
@@ -11,11 +13,14 @@ class UserController {
         const arrError: ErrorsType = errors.array();
         return next(ApiErrors.BadRequest('Validation error', arrError));
       }
-      const { email, password } = req.body;
-      const userData = await UserService.registration(email, password)
+      const { email, password, username } = req.body;
+      const userData = await UserService.registration(email, password, username)
       res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: expiresRefreshToken, httpOnly: true })
 
-      return res.json(userData)
+      return res.json({
+        ...new TokenDto(userData),
+        user: new UserDto({...userData.user})
+      })
     } catch (e) {
       next(e)
     }
@@ -27,7 +32,10 @@ class UserController {
       const userData = await UserService.login(email, password);
       res.cookie(nameRefreshToken, userData.refreshToken, { maxAge: expiresRefreshToken, httpOnly: true })
 
-      return res.json(userData);
+      return res.json({
+        ...new TokenDto(userData),
+        user: new UserDto({...userData.user})
+      });
     } catch (e) {
       next(e)
     }

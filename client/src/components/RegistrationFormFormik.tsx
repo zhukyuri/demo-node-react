@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Formik, FormikValues } from 'formik';
 import * as yup from 'yup';
-import { Box, Button, Container, Link, Stack, TextField, Typography } from '@mui/material';
-import { Context } from '../index';
+import { Box, Button, Container, Link, Stack, TextField } from '@mui/material';
 import { AuthStatus } from '../store/Store';
 
 const validationSchema = yup.object({
@@ -28,15 +27,18 @@ const initialValues = {
   username: process.env.REACT_APP_DEFAULT_USERNAME,
 }
 
-const RegistrationFormFormik = () => {
-  const { store } = useContext(Context);
+interface Props {
+  setAuthStatus: (status: AuthStatus) => void;
+  registration: (email: string, password: string, username: string) => Promise<void>
+}
 
+const RegistrationFormFormik = ({ setAuthStatus, registration }: Props) => {
   const handleRegistration = async (values: FormikValues) => {
-    await store.login(values.email, values.password)
+    await registration(values.email, values.password, values.username)
   }
 
   const handleSetLoginForm = () => {
-    store.setAuthStatus(AuthStatus.LoginForm);
+    setAuthStatus(AuthStatus.LoginForm);
   }
 
   return (
@@ -54,19 +56,12 @@ const RegistrationFormFormik = () => {
           validationSchema={validationSchema}
         >
           {({
-              isSubmitting,
               touched,
-              dirty,
               isValid,
-              isValidating,
               handleChange,
               handleBlur,
-              handleSubmit,
               values,
               errors,
-              setSubmitting,
-              validateField,
-              validateForm,
             }) => {
             return (
               <form>
@@ -81,7 +76,7 @@ const RegistrationFormFormik = () => {
                     value={values.username}
                     onChange={handleChange}
                     error={touched.username && Boolean(errors.username)}
-                    helperText={touched.username && errors.username || ' '}
+                    helperText={touched.username && (errors.username || ' ')}
                   />
                   <TextField
                     variant="outlined"
@@ -93,7 +88,7 @@ const RegistrationFormFormik = () => {
                     value={values.email}
                     onChange={handleChange}
                     error={touched.email && Boolean(errors.email)}
-                    helperText={touched.email && errors.email || ' '}
+                    helperText={touched.email && (errors.email || ' ')}
                   />
                   <TextField
                     variant="outlined"
@@ -107,7 +102,7 @@ const RegistrationFormFormik = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={touched.password && Boolean(errors.password)}
-                    helperText={touched.password && errors.password || ' '}
+                    helperText={touched.password && (errors.password || ' ')}
                   />
                 </Stack>
                 <Stack direction="row" spacing={2}>
