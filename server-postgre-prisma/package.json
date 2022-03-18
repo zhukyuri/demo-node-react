@@ -10,7 +10,8 @@
     "m:format": "prisma format",
     "m:pull": "prisma db pull",
     "m:init:dev": "prisma migrate dev --name initial-migration --create-only",
-    "m:migrate:dev": "prisma migrate dev"
+    "m:migrate:dev": "prisma migrate dev",
+    "m:migrate:reset": "prisma migrate reset"
   },
   "author": "",
   "license": "ISC",

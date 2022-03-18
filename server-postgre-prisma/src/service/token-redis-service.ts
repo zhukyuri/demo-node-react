@@ -2,6 +2,11 @@ import jwt from "jsonwebtoken"
 import redis from '../redis/redis-cli';
 import { expiresAccessTokenSrt, expiresRefreshTokenStr } from '../configs/appConfigs';
 
+export interface Tokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
 class TokenRedisService {
   generateTokens(payload) {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { expiresIn: expiresAccessTokenSrt })

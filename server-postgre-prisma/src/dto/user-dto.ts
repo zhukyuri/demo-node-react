@@ -1,11 +1,13 @@
 export default class UserDto {
-  email;
   id;
+  email;
+  username;
   isActivate;
 
   constructor(model) {
-    this.email = model.email;
     this.id = model.id;
+    this.email = model.email;
+    this.username = model.username;
     this.isActivate = model.isActivate;
   }
 }
