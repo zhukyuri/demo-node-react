@@ -14,14 +14,15 @@ import RegistrationFormFormik from './components/RegistrationFormFormik';
 function App() {
   const { store } = useContext(Context)
   const [users, setUsers] = useState<IUser[]>([])
+  const { isLoading, authStatus, user, checkAuth, removeUser, registration, logout, login, setAuthStatus } = store;
 
   useEffect(() => {
     if (LocalToken.read()) {
-      store.checkAuth()
+      checkAuth()
     }
   }, [])
 
-  if (store.isLoading) return <div>Loading ...</div>
+  if (isLoading) return <div>Loading ...</div>
 
   const getUsersAll = async (): Promise<void> => {
     try {
@@ -34,13 +35,22 @@ function App() {
 
   return (
     <Container maxWidth="xl">
-      {(store.authStatus === AuthStatus.Authorized) && <MenuAppBar />}
-      {(store.authStatus === AuthStatus.LoginForm) && <LoginFormFormik />}
-      {(store.authStatus === AuthStatus.RegistrationForm) && <RegistrationFormFormik />}
-      {(store.authStatus === AuthStatus.Authorized) && <RootPage getUsersAll={getUsersAll}
-        user={store.user}
+      {(authStatus === AuthStatus.Authorized) && <MenuAppBar
+        removeUser={removeUser}
+        logout={logout}
+        user={user}
+      />}
+      {(authStatus === AuthStatus.LoginForm) && <LoginFormFormik
+        setAuthStatus={setAuthStatus}
+        login={login}
+      />}
+      {(authStatus === AuthStatus.RegistrationForm) && <RegistrationFormFormik
+        registration={registration}
+        setAuthStatus={setAuthStatus}
+      />}
+      {(authStatus === AuthStatus.Authorized) && <RootPage
+        getUsersAll={getUsersAll}
         users={users}
-        authStatus={store.authStatus}
       />}
     </Container>
   );

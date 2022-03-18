@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import { IUser } from '../models/IUser'
+import moment from 'moment';
 
 export default function TableUsers(users: IUser[]) {
   return (
@@ -33,8 +34,8 @@ export default function TableUsers(users: IUser[]) {
               <TableCell align="right">{row.name}</TableCell>
               <TableCell align="right">{row.email}</TableCell>
               <TableCell align="right"><Checkbox checked={row.isActivated}/></TableCell>
-              <TableCell align="right">{row.createdAt}</TableCell>
-              <TableCell align="right">{row.updatedAt}</TableCell>
+              <TableCell align="right">{moment(row.createdAt).format("DD/MM/YY")}</TableCell>
+              <TableCell align="right">{moment(row.updatedAt).format("DD/MM/YY")}</TableCell>
             </TableRow>
           ))}
         </TableBody>

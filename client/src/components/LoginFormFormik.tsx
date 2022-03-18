@@ -2,8 +2,7 @@ import { Formik, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { Box, Button, Container, Link, Stack, TextField } from '@mui/material';
 import { AuthStatus } from '../store/Store';
-import React, { useContext } from 'react';
-import { Context } from '../index';
+import React from 'react';
 
 const validationSchema = yup.object({
   email: yup
@@ -22,15 +21,18 @@ const initialValues = {
   password: process.env.REACT_APP_DEFAULT_PASSWORD,
 }
 
-const LoginFormFormik = () => {
-  const { store } = useContext(Context)
+interface Props {
+  setAuthStatus: (status: AuthStatus) => void;
+  login: (email: string, password: string) => Promise<void>
+}
 
+const LoginFormFormik = ({ setAuthStatus, login }: Props) => {
   const handleSetRegistration = () => {
-    store.setAuthStatus(AuthStatus.RegistrationForm)
+    setAuthStatus(AuthStatus.RegistrationForm)
   }
 
   const handleLogin = async (values: FormikValues) => {
-    await store.login(values.email, values.password)
+    await login(values.email, values.password)
   }
 
   return (
@@ -49,19 +51,12 @@ const LoginFormFormik = () => {
           validationSchema={validationSchema}
         >
           {({
-              isSubmitting,
               touched,
-              dirty,
               isValid,
-              isValidating,
               handleChange,
               handleBlur,
-              handleSubmit,
               values,
               errors,
-              setSubmitting,
-              validateField,
-              validateForm,
             }) => {
             return (
               <form>
@@ -76,7 +71,7 @@ const LoginFormFormik = () => {
                     value={values.email}
                     onChange={handleChange}
                     error={touched.email && Boolean(errors.email)}
-                    helperText={touched.email && errors.email || ' '}
+                    helperText={touched.email && (errors.email || ' ')}
                   />
                   <TextField
                     variant="outlined"
@@ -90,7 +85,7 @@ const LoginFormFormik = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={touched.password && Boolean(errors.password)}
-                    helperText={touched.password && errors.password || ' '}
+                    helperText={touched.password && (errors.password || ' ')}
                   />
                 </Stack>
                 <Stack direction="row" spacing={2}>
