@@ -7,6 +7,7 @@ const router = new express.Router();
 
 router.post('/registration',
   body('email').isEmail(),
+  body('username').isLength({ min: 3, max: 32 }),
   body('password').isLength({ min: 3, max: 32 }),
   UserController.registration);
 router.post('/login', UserController.login);
