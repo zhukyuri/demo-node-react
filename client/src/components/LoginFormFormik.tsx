@@ -70,6 +70,7 @@ const LoginFormFormik = ({ setAuthStatus, login }: Props) => {
                     label="Email"
                     value={values.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     error={touched.email && Boolean(errors.email)}
                     helperText={touched.email && (errors.email || ' ')}
                   />

@@ -18,7 +18,7 @@ export default class UserOrm {
     }
   }
 
- static async ormCreate(options) {
+  static async ormCreate(options) {
     try {
       return await db.user.create(options);
     } catch (e) {
@@ -26,7 +26,7 @@ export default class UserOrm {
     }
   }
 
- static async ormDelete(options) {
+  static async ormDelete(options) {
     try {
       return await db.user.delete(options);
     } catch (e) {
@@ -34,7 +34,7 @@ export default class UserOrm {
     }
   }
 
- static async ormUpdate(options) {
+  static async ormUpdate(options) {
     try {
       return await db.user.update(options);
     } catch (e) {

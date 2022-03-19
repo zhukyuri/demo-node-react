@@ -74,6 +74,7 @@ const RegistrationFormFormik = ({ setAuthStatus, registration }: Props) => {
                     name="username"
                     label="Username"
                     value={values.username}
+                    onBlur={handleBlur}
                     onChange={handleChange}
                     error={touched.username && Boolean(errors.username)}
                     helperText={touched.username && (errors.username || ' ')}
@@ -86,6 +87,7 @@ const RegistrationFormFormik = ({ setAuthStatus, registration }: Props) => {
                     name="email"
                     label="Email"
                     value={values.email}
+                    onBlur={handleBlur}
                     onChange={handleChange}
                     error={touched.email && Boolean(errors.email)}
                     helperText={touched.email && (errors.email || ' ')}

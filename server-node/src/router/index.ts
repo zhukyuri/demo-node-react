@@ -1,12 +1,13 @@
-import express from "express";
+import express from 'express';
 import UserController from '../controllers/user-controller';
-import { body } from 'express-validator'
+import { body } from 'express-validator';
 import authMiddleware from '../middlewares/auth-middleware';
 
 const router = new express.Router();
 
 router.post('/registration',
   body('email').isEmail(),
+  body('username').isLength({ min: 3, max: 32 }),
   body('password').isLength({ min: 3, max: 32 }),
   UserController.registration);
 router.post('/login', UserController.login);

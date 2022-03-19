@@ -1,4 +1,4 @@
-import Redis from "ioredis";
+import Redis from 'ioredis';
 
 const redis = new Redis({
   port: process.env.DB_REDIS_PORT,
@@ -8,4 +8,4 @@ const redis = new Redis({
   db: process.env.DB_REDIS_DB,
 });
 
-export default redis
+export default redis;

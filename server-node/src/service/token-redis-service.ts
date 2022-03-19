@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken"
+import jwt from 'jsonwebtoken';
 import redis from '../redis/redis-cli';
 import { expiresAccessTokenSrt, expiresRefreshTokenStr } from '../configs/appConfigs';
 
@@ -9,15 +9,15 @@ export interface Tokens {
 
 class TokenRedisService {
   generateTokens(payload) {
-    const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { expiresIn: expiresAccessTokenSrt })
-    const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: expiresRefreshTokenStr })
+    const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { expiresIn: expiresAccessTokenSrt });
+    const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: expiresRefreshTokenStr });
 
-    return { accessToken, refreshToken }
+    return { accessToken, refreshToken };
   }
 
   validateAccessToken(token) {
     try {
-      return jwt.verify(token, process.env.JWT_ACCESS_SECRET)
+      return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
     } catch (e) {
       return null;
     }
@@ -25,7 +25,7 @@ class TokenRedisService {
 
   validateRefreshToken(token) {
     try {
-      return jwt.verify(token, process.env.JWT_REFRESH_SECRET)
+      return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
     } catch (e) {
       return null;
     }
