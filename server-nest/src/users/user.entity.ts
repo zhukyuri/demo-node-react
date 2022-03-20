@@ -1,7 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { DatesAt } from '../abstracts/datesAt.entity';
+import { UserProfile } from '../userProfile/userProfile.entity';
 
 @Entity()
-export class User {
+export class User extends DatesAt {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -16,4 +24,8 @@ export class User {
 
   @Column({ default: false })
   isActivate: boolean;
+
+  @OneToOne(() => UserProfile)
+  @JoinColumn()
+  profile: UserProfile;
 }
