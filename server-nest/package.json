@@ -1,5 +1,5 @@
 {
-  "name": "server-nest",
+  "name": "del-2",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -18,15 +18,24 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "migration:create": "npx typeorm migration:create -d src/migrations -n -",
+    "migration:generate": "npm run build && npx typeorm migration:generate -d src/migrations -n -",
+    "migration:run": "npm run build && npx typeorm migration:run",
+    "migration:revert": "npm run build && npx typeorm migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/typeorm": "^8.0.3",
+    "dotenv": "^16.0.0",
+    "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "typeorm": "^0.2.45"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
