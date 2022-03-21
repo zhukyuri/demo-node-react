@@ -27,7 +27,7 @@ Front-End Client is a simple ReactJS application.
     - TypeScript
 
 - ## /server-node
-  - Server
+  - Server REST API
     - Node
     - express
     - Redis
@@ -45,4 +45,16 @@ Front-End Client is a simple ReactJS application.
   - DTO
 
 - ## /server-nest (in progress)
-  - Server
+  - Server REST API
+    - NestJS
+    - TypeORM
+    - PostgreSQL
+    - migration DB
+    - JWT
+    - process environment
+    - cookies
+    - TypeScript
+  - Controllers
+  - Models
+  - Services
+  - DTO
