@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { DatesAt } from '../abstracts/datesAt.entity';
+import { DatesAt } from '../../abstractEntities/datesAt.entity';
 
 @Entity()
 @Unique(['key'])

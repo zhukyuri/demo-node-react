@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { DatesAt } from '../abstracts/datesAt.entity';
+import { DatesAt } from '../../abstractEntities/datesAt.entity';
 import { UserProfile } from '../userProfile/userProfile.entity';
 
 @Entity()
