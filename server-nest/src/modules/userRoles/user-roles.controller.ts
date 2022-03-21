@@ -4,7 +4,7 @@ import { UserRolesService } from './user-roles.service';
 import { CreateUserRoleDto } from './dto/create-userRole.dto';
 import { UserRoles } from './user-roles.entity';
 
-@Controller('roles')
+@Controller('user-roles')
 export class UserRolesController {
   constructor(private readonly userRolesService: UserRolesService) {
     //
