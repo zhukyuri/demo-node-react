@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { DatesAt } from '../abstracts/datesAt.entity';
+import { UserRoles } from '../userRoles/user-roles.entity';
 
-export enum UserRole {
+export enum SystemRole {
   ADMIN = 'admin',
   EDITOR = 'editor',
   GHOST = 'ghost',
@@ -21,8 +22,12 @@ export class UserProfile extends DatesAt {
   @Column({
     type: 'varchar',
     length: 15,
-    enum: UserRole,
-    default: UserRole.GHOST,
+    enum: SystemRole,
+    default: SystemRole.GHOST,
   })
-  roles: UserRole;
+  systemRole: SystemRole;
+
+  @OneToMany(() => UserRoles, (userRoles) => userRoles.id)
+  @JoinColumn()
+  userRoles: UserRoles[];
 }
