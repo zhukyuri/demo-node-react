@@ -3,10 +3,14 @@ import { Roles } from './roles.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateRoleDto } from './dto/create-role.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
 
 @Injectable()
 export class RolesService {
-  constructor(@InjectRepository(Roles) private readonly rolesRepository: Repository<Roles>) {
+  constructor(
+    @InjectRepository(Roles)
+    private readonly rolesRepository: Repository<Roles>,
+  ) {
     //
   }
 
@@ -16,6 +20,16 @@ export class RolesService {
     role.name = createRoleDto.name;
 
     return await this.rolesRepository.save(role);
+  }
+
+  async update(id: number, updateRoleDto: UpdateRoleDto): Promise<Roles> {
+    const role = new Roles();
+    if (updateRoleDto.key) role.key = updateRoleDto.key;
+    if (updateRoleDto.name) role.name = updateRoleDto.name;
+
+    await this.rolesRepository.update(id, role);
+
+    return await this.rolesRepository.findOne(id);
   }
 
   async findAll(): Promise<Roles[]> {

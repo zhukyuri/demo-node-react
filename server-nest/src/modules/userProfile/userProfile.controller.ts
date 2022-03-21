@@ -1,8 +1,19 @@
-import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { DeleteResult } from 'typeorm';
 import { CreateUserProfileDto } from './dto/create-userProfile.dto';
 import { UserProfile } from './userProfile.entity';
 import { UserProfileService } from './userProfile.service';
+import { UpdateRoleDto } from '../roles/dto/update-role.dto';
+import { Roles } from '../roles/roles.entity';
+import { UpdateUserProfileDto } from './dto/update-userProfile.dto';
 
 @Controller('profile')
 export class UserProfileController {
@@ -11,8 +22,18 @@ export class UserProfileController {
   }
 
   @Post()
-  create(@Body() createUserProfileDto: CreateUserProfileDto): Promise<UserProfile> {
+  create(
+    @Body() createUserProfileDto: CreateUserProfileDto,
+  ): Promise<UserProfile> {
     return this.userProfileService.create(createUserProfileDto);
+  }
+
+  @Put(':id')
+  update(
+    @Param('id') id: number,
+    @Body() updateUserProfileDto: UpdateUserProfileDto,
+  ): Promise<UserProfile> {
+    return this.userProfileService.update(id, updateUserProfileDto);
   }
 
   @Get()
@@ -21,12 +42,12 @@ export class UserProfileController {
   }
 
   @Get(':id')
-  findOne(id): Promise<UserProfile> {
+  findOne(@Param('id') id: number): Promise<UserProfile> {
     return this.userProfileService.findOne(id);
   }
 
   @Delete(':id')
-  delete(id): Promise<DeleteResult> {
+  delete(@Param('id') id: number): Promise<DeleteResult> {
     return this.userProfileService.delete(id);
   }
 }
