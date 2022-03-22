@@ -3,9 +3,9 @@ import { DatesAt } from '../../abstractEntities/datesAt.entity';
 import { UserRoles } from '../userRoles/user-roles.entity';
 
 export enum SystemRole {
+  GHOST = 'ghost',
   ADMIN = 'admin',
   EDITOR = 'editor',
-  GHOST = 'ghost',
 }
 
 @Entity()

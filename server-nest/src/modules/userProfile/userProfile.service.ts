@@ -15,11 +15,9 @@ export class UserProfileService {
   }
 
   async create(
-    createUserProfileDto: CreateUserProfileDto,
+    createUserProfile: CreateUserProfileDto,
   ): Promise<UserProfile> {
-    const userProfile = new UserProfile();
-    userProfile.firstName = createUserProfileDto.firstName;
-    userProfile.lastName = createUserProfileDto.lastName;
+    const userProfile = new CreateUserProfileDto(createUserProfile);
 
     return await this.userProfileRepository.save(userProfile);
   }
@@ -28,11 +26,7 @@ export class UserProfileService {
     id: number,
     updateUserProfileDto: UpdateUserProfileDto,
   ): Promise<UserProfile> {
-    const userProfile = new UserProfile();
-    if (updateUserProfileDto.firstName)
-      userProfile.firstName = updateUserProfileDto.firstName;
-    if (updateUserProfileDto.lastName)
-      userProfile.lastName = updateUserProfileDto.lastName;
+    const userProfile = new UpdateUserProfileDto(updateUserProfileDto);
 
     await this.userProfileRepository.update(id, userProfile);
 

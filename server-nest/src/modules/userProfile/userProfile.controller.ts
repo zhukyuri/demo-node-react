@@ -1,18 +1,8 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, } from '@nestjs/common';
 import { DeleteResult } from 'typeorm';
 import { CreateUserProfileDto } from './dto/create-userProfile.dto';
 import { UserProfile } from './userProfile.entity';
 import { UserProfileService } from './userProfile.service';
-import { UpdateRoleDto } from '../roles/dto/update-role.dto';
-import { Roles } from '../roles/roles.entity';
 import { UpdateUserProfileDto } from './dto/update-userProfile.dto';
 
 @Controller('profile')
@@ -23,9 +13,9 @@ export class UserProfileController {
 
   @Post()
   create(
-    @Body() createUserProfileDto: CreateUserProfileDto,
+    @Body() createUserProfile: CreateUserProfileDto,
   ): Promise<UserProfile> {
-    return this.userProfileService.create(createUserProfileDto);
+    return this.userProfileService.create(createUserProfile);
   }
 
   @Put(':id')
