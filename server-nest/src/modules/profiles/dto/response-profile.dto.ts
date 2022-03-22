@@ -1,6 +1,6 @@
-import { SystemRole, UserProfile } from '../userProfile.entity';
+import { SystemRole, Profile } from '../profile.entity';
 
-export class ResponseUserProfileDto {
+export class ResponseProfileDto {
   public id: number;
   public firstName: string;
   public lastName: string;
@@ -8,7 +8,7 @@ export class ResponseUserProfileDto {
   public createAt: Date;
   public updateAt: Date;
 
-  constructor(payload: UserProfile) {
+  constructor(payload: Profile) {
     this.id = payload.id
     this.firstName = payload.firstName
     this.lastName = payload.lastName

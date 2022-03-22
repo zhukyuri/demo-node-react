@@ -9,7 +9,7 @@ export enum SystemRole {
 }
 
 @Entity()
-export class UserProfile extends DatesAt {
+export class Profile extends DatesAt {
   @PrimaryGeneratedColumn()
   id: number;
 

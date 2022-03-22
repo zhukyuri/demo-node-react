@@ -1,6 +1,6 @@
-import { SystemRole } from '../userProfile.entity';
+import { SystemRole } from '../profile.entity';
 
-export class CreateUserProfileDto {
+export class CreateProfileDto {
   public firstName: string;
   public lastName: string;
   public systemRole?: SystemRole;

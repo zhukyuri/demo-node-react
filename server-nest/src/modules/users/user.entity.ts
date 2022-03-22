@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DatesAt } from '../../abstractEntities/datesAt.entity';
-import { UserProfile } from '../userProfile/userProfile.entity';
+import { Profile } from '../profiles/profile.entity';
 
 @Entity()
 export class User extends DatesAt {
@@ -25,7 +25,7 @@ export class User extends DatesAt {
   @Column({ default: false })
   isActivate: boolean;
 
-  @OneToOne(() => UserProfile)
+  @OneToOne(() => Profile)
   @JoinColumn()
-  profile: UserProfile;
+  profile: Profile;
 }
