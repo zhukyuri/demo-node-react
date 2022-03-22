@@ -43,6 +43,11 @@ export class UsersController {
     return this.userService.findOne(id);
   }
 
+  @Get(':id/profile')
+  findOneProfile(@Param('id') id: number): Promise<ResponseUserDto> {
+    return this.userService.findOneProfile(id);
+  }
+
   @Delete(':id')
   delete(@Param('id') id: number): Promise<DeleteResult> {
     return this.userService.delete(id);

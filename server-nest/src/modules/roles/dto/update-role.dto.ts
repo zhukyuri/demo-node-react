@@ -1,4 +1,9 @@
 export class UpdateRoleDto {
-  name?: string;
-  key?: string;
+  public name?: string;
+  public key?: string;
+
+  constructor(payload) {
+    if (payload.name) this.name = payload.name;
+    if (payload.key) this.key = payload.key;
+  }
 }

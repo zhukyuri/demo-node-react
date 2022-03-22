@@ -1,5 +1,11 @@
 export class UpdateUserDto {
-  username?: string;
-  email?: string;
-  password?: string;
+  public username?: string;
+  public email?: string;
+  public password?: string;
+
+  constructor(payload) {
+    if (payload.username) this.username = payload.username;
+    if (payload.email) this.email = payload.email;
+    if (payload.password) this.password = payload.password;
+  }
 }
