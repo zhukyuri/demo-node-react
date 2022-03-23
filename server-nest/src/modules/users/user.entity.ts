@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { DatesAt } from '../../abstractEntities/datesAt.entity';
+import { DatesAt } from '../abstractEntities/datesAt.entity';
 import { Profile } from '../profiles/profile.entity';
 import { UserRoles } from '../userRoles/user-roles.entity';
 

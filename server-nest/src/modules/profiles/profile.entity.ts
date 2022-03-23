@@ -1,5 +1,11 @@
-import { Column, Entity, JoinColumn, JoinTable, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { DatesAt } from '../../abstractEntities/datesAt.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { DatesAt } from '../abstractEntities/datesAt.entity';
 import { UserRoles } from '../userRoles/user-roles.entity';
 
 export enum SystemRole {
