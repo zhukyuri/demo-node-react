@@ -16,20 +16,13 @@ export class UsersService {
   }
 
   async create(dataUserDto: CreateUserDto): Promise<User> {
-    const user = new User();
-    user.username = dataUserDto.username;
-    user.email = dataUserDto.email;
-    user.password = dataUserDto.password;
+    const user = new CreateUserDto(dataUserDto);
 
     return await this.userRepository.save(user);
   }
 
   async update(id: number, dataUserDto: UpdateUserDto): Promise<User> {
-    const user = new User();
-    if (dataUserDto.username) user.username = dataUserDto.username;
-    if (dataUserDto.email) user.email = dataUserDto.email;
-    if (dataUserDto.password) user.password = dataUserDto.password;
-
+    const user = new UpdateUserDto(dataUserDto);
     await this.userRepository.update(id, user);
 
     return await this.userRepository.findOne(id);
@@ -45,6 +38,13 @@ export class UsersService {
     const res = await this.userRepository.findOne(id);
 
     return new ResponseUserDto(res);
+  }
+
+  async findOneProfile(id: number): Promise<ResponseUserDto> {
+    return await this.userRepository.findOne(id, {
+      relations: ['profile'],
+      select: ['id', 'username', 'email', 'isActivate', 'createAt', 'updateAt'],
+    });
   }
 
   async delete(id: number): Promise<DeleteResult> {

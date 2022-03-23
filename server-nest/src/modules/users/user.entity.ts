@@ -2,11 +2,13 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { DatesAt } from '../../abstractEntities/datesAt.entity';
-import { UserProfile } from '../userProfile/userProfile.entity';
+import { DatesAt } from '../abstractEntities/datesAt.entity';
+import { Profile } from '../profiles/profile.entity';
+import { UserRoles } from '../userRoles/user-roles.entity';
 
 @Entity()
 export class User extends DatesAt {
@@ -25,7 +27,10 @@ export class User extends DatesAt {
   @Column({ default: false })
   isActivate: boolean;
 
-  @OneToOne(() => UserProfile)
+  @OneToOne(() => Profile)
   @JoinColumn()
-  profile: UserProfile;
+  profile: Profile;
+
+  @OneToMany(() => User, (user) => user.userRole)
+  userRole: UserRoles;
 }

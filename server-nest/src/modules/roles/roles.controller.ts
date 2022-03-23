@@ -1,13 +1,5 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
-import { DeleteResult, UpdateResult } from 'typeorm';
+import { Body, Controller, Delete, Get, Param, Post, Put, } from '@nestjs/common';
+import { DeleteResult } from 'typeorm';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Roles } from './roles.entity';
