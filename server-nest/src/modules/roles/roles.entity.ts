@@ -1,9 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { DatesAt } from '../../abstractEntities/datesAt.entity';
 
 @Entity()
 @Unique(['key'])
-export class Roles extends DatesAt {
+export class Roles {
   @PrimaryGeneratedColumn()
   id: number;
 

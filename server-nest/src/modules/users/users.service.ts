@@ -5,7 +5,6 @@ import { DeleteResult, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ResponseUserDto } from './dto/response-user.dto';
-import { UserRoles } from '../userRoles/user-roles.entity';
 
 @Injectable()
 export class UsersService {
@@ -42,12 +41,10 @@ export class UsersService {
   }
 
   async findOneProfile(id: number): Promise<ResponseUserDto> {
-    return await this.userRepository.findOne(
-      id,
-      {
-        relations: ['profile'],
-        select: ['id', 'username', 'email', 'isActivate', 'createAt', 'updateAt'],
-      });
+    return await this.userRepository.findOne(id, {
+      relations: ['profile'],
+      select: ['id', 'username', 'email', 'isActivate', 'createAt', 'updateAt'],
+    });
   }
 
   async delete(id: number): Promise<DeleteResult> {
