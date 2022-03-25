@@ -1,53 +1,54 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
+import { Users } from './users.entity';
 import { DeleteResult, Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ResponseUserDto } from './dto/response-user.dto';
+import { CreateUsersDto } from './dto/create-users.dto';
+import { ResponseUsersDto } from './dto/response-users.dto';
+import { UpdateUsersDto } from './dto/update-users.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(Users)
+    private readonly usersRepository: Repository<Users>,
   ) {
     //
   }
 
-  async create(dataUserDto: CreateUserDto): Promise<User> {
-    const user = new CreateUserDto(dataUserDto);
+  async create(dataUsersDto: CreateUsersDto): Promise<Users> {
+    const user = new CreateUsersDto(dataUsersDto);
 
-    return await this.userRepository.save(user);
+    return await this.usersRepository.save(user);
   }
 
-  async update(id: number, dataUserDto: UpdateUserDto): Promise<User> {
-    const user = new UpdateUserDto(dataUserDto);
-    await this.userRepository.update(id, user);
+  async update(id: number, dataUserDto: UpdateUsersDto): Promise<Users> {
+    const user = new UpdateUsersDto(dataUserDto);
+    await this.usersRepository.update(id, user);
 
-    return await this.userRepository.findOne(id);
+    return await this.usersRepository.findOne(id);
   }
 
-  async findAll(): Promise<ResponseUserDto[]> {
-    const res = await this.userRepository.find();
+  async findAll(): Promise<ResponseUsersDto[]> {
+    const res = await this.usersRepository.find();
 
-    return res.map((i) => new ResponseUserDto(i));
+    return res.map((i) => new ResponseUsersDto(i));
   }
 
-  async findOne(id: number): Promise<ResponseUserDto> {
-    const res = await this.userRepository.findOne(id);
+  async findOne(id: number): Promise<ResponseUsersDto> {
+    const res = await this.usersRepository.findOne(id);
 
-    return new ResponseUserDto(res);
+    return new ResponseUsersDto(res);
   }
 
-  async findOneProfile(id: number): Promise<ResponseUserDto> {
-    return await this.userRepository.findOne(id, {
+  async findOneProfile(id: number): Promise<ResponseUsersDto> {
+    return await this.usersRepository.findOne(id, {
       relations: ['profile'],
       select: ['id', 'username', 'email', 'isActivate', 'createAt', 'updateAt'],
     });
   }
 
   async delete(id: number): Promise<DeleteResult> {
-    return await this.userRepository.delete(id);
+    return await this.usersRepository.delete(id);
   }
+
 }

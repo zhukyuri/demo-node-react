@@ -5,11 +5,14 @@ const configBase = {
   database: process.env.POSTGRES_DATABASE || 'postgres',
   username: process.env.POSTGRES_USERNAME || 'postgres',
   password: process.env.POSTGRES_PASSWORD || '12345',
-  entities: ['dist/**/*.entity{.ts,.js}'],
-  // migrations: ['migrations/*.ts'],
-  // migrationsRun: true,
-  synchronize: true,
-  // dropSchema: true,
+  entities: ['dist/src/modules/**/*.entity.js'],
+  migrations: ['dist/src/migrations/*.js'],
+  migrationsRun: true,
+  synchronize: false,
+  dropSchema: false,
+  cli: {
+    migrationsDir: 'src/migrations',
+  },
 };
 
 module.exports = configBase;

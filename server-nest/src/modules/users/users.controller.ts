@@ -8,43 +8,44 @@ import {
   Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './user.entity';
+import { CreateUsersDto } from './dto/create-users.dto';
+import { Users } from './users.entity';
+import { UpdateUsersDto } from './dto/update-users.dto';
+import { ResponseUsersDto } from './dto/response-users.dto';
 import { DeleteResult } from 'typeorm';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ResponseUserDto } from './dto/response-user.dto';
 
-@Controller('user')
+@Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {
     //
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
+  create(@Body() createUserDto: CreateUsersDto): Promise<Users> {
     return this.userService.create(createUserDto);
   }
 
   @Put(':id')
   update(
     @Param('id') id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<User> {
+    @Body() updateUserDto: UpdateUsersDto,
+  ): Promise<Users> {
     return this.userService.update(id, updateUserDto);
   }
 
   @Get()
-  findAll(): Promise<ResponseUserDto[]> {
+  findAll(): Promise<ResponseUsersDto[]> {
     return this.userService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<ResponseUserDto> {
+  findOne(@Param('id') id: number): Promise<ResponseUsersDto> {
     return this.userService.findOne(id);
   }
 
   @Get(':id/profile')
-  findOneProfile(@Param('id') id: number): Promise<ResponseUserDto> {
+  findOneProfile(@Param('id') id: number): Promise<ResponseUsersDto> {
     return this.userService.findOneProfile(id);
   }
 
