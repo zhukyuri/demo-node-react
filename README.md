@@ -58,3 +58,4 @@ Front-End Client is a simple ReactJS application.
   - Models
   - Services
   - DTO
+  - Entity: Users, Profile, UserRoles, Roles

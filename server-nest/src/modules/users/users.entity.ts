@@ -1,6 +1,13 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { DatesAt } from '../abstractEntities/datesAt.entity';
 import { Profile } from '../profile/profile.entity';
+import { UserRoles } from '../user-roles/user-roles.entity';
 
 @Entity()
 export class Users extends DatesAt {
@@ -22,6 +29,6 @@ export class Users extends DatesAt {
   @OneToOne(() => Profile)
   profile: Profile;
 
-  // @OneToMany(() => Users, (users) => users.userRole)
-  // userRole: UserRoles;
+  @OneToMany(() => Users, (users) => users.userRole)
+  userRole: UserRoles;
 }
