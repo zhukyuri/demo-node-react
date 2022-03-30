@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import { ProfileModule } from '../profile/profile.module';
 import { RolesModule } from '../roles/roles.module';
 import { UserRolesModule } from '../user-roles/user-roles.module';
+import { RedisCacheModule } from '../redis-cache/redis-cache.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UserRolesModule } from '../user-roles/user-roles.module';
     ProfileModule,
     RolesModule,
     UserRolesModule,
+    RedisCacheModule,
   ],
   controllers: [AppController],
   providers: [AppService],
