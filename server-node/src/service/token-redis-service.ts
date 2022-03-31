@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import redis from '../redis/redis-cli';
+import redis from '../redis/redis-credentials';
 import { expiresAccessTokenSrt, expiresRefreshTokenStr } from '../configs/appConfigs';
 
 export interface Tokens {
