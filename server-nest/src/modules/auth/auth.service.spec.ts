@@ -1,7 +1,6 @@
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserModule } from '../user/user.module';
 import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './strategies/jwt.strategy';
@@ -13,7 +12,6 @@ describe('AuthService', () => {
   beforeEach(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
       imports: [
-        UserModule,
         PassportModule,
         JwtModule.register({
           secret: jwtConstants.secret,
@@ -37,7 +35,6 @@ describe('validateUser', () => {
   beforeEach(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
       imports: [
-        UserModule,
         PassportModule,
         JwtModule.register({
           secret: jwtConstants.secret,
@@ -67,7 +64,6 @@ describe('validateLogin', () => {
   beforeEach(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
       imports: [
-        UserModule,
         PassportModule,
         JwtModule.register({
           secret: jwtConstants.secret,

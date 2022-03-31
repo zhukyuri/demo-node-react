@@ -1,20 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import { JwtService } from '@nestjs/jwt';
 import { RedisCacheService } from '../redis-cache/redis-cache.service';
-import {
-  expiresAccessTokenSrt,
-  expiresRefreshToken,
-  expiresRefreshTokenStr,
-  msecToMinute,
-} from '../../config/appConfigs';
+import { expiresRefreshToken, msecToMinute } from '../../config/appConfigs';
+import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private readonly jwtService: JwtService,
     private readonly redisCacheService: RedisCacheService,
+    private readonly tokenService: TokenService,
   ) {
     //
   }
@@ -30,19 +25,15 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { username: user.username, sub: user.userId };
-    const accessToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET_ACCESS,
-      expiresIn: expiresAccessTokenSrt,
-    });
-    const refreshToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET_REFRESH,
-      expiresIn: expiresRefreshTokenStr,
-    });
+    const accessToken = this.tokenService.generateTokenAccess(payload);
+    const refreshToken = this.tokenService.generateTokenRefresh(payload);
 
-    await this.redisCacheService.setTokenRefresh(
+    await this.redisCacheService.saveTokenRefresh(
       refreshToken,
       msecToMinute(expiresRefreshToken),
     );
+
+    console.log(expiresRefreshToken, msecToMinute(expiresRefreshToken));
 
     return {
       access_token: accessToken,
