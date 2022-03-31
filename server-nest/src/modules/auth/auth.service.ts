@@ -1,12 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { RedisCacheService } from '../redis-cache/redis-cache.service';
+import {
+  expiresAccessToken,
+  expiresAccessTokenSrt,
+  expiresRefreshToken,
+  expiresRefreshTokenStr,
+  msecToMinute,
+} from '../../config/appConfigs';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
+    private readonly redisCacheService: RedisCacheService,
   ) {
     //
   }
@@ -22,8 +31,19 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { username: user.username, sub: user.userId };
+    const accessToken = this.jwtService.sign(payload);
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET_REFRESH,
+      expiresIn: expiresRefreshTokenStr,
+    });
+
+    await this.redisCacheService.setTokenRefresh(
+      refreshToken,
+      msecToMinute(expiresRefreshToken),
+    );
+
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: accessToken,
     };
   }
 }

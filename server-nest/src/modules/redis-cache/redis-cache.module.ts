@@ -8,6 +8,7 @@ import { RedisCacheService } from './redis-cache.service';
   imports: [CacheModule],
   controllers: [RedisCacheController],
   providers: [RedisCacheService],
+  exports: [RedisCacheService],
 })
 export class RedisCacheModule {
   //
