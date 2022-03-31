@@ -13,7 +13,6 @@ import { RedisCacheModule } from '../redis-cache/redis-cache.module';
   imports: [
     TypeOrmModule.forRoot(),
     AuthModule,
-    // UserModule,
     UsersModule,
     ProfileModule,
     RolesModule,
