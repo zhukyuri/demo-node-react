@@ -5,6 +5,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { CreateUsersDto } from './dto/create-users.dto';
 import { ResponseUsersDto } from './dto/response-users.dto';
 import { UpdateUsersDto } from './dto/update-users.dto';
+import { ValidateUsersDto } from './dto/validate-users.dto';
 
 @Injectable()
 export class UsersService {
@@ -40,6 +41,26 @@ export class UsersService {
     return new ResponseUsersDto(res);
   }
 
+  async findOneByUsername(username: string): Promise<ResponseUsersDto> {
+    const res = await this.usersRepository.findOne({
+      where: {
+        username: username,
+      },
+    });
+
+    return new ResponseUsersDto(res);
+  }
+
+  async findOneValidateUser(email: string): Promise<ValidateUsersDto> {
+    const res = await this.usersRepository.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    return new ValidateUsersDto(res);
+  }
+
   async findOneProfile(id: number): Promise<ResponseUsersDto> {
     return await this.usersRepository.findOne(id, {
       relations: ['profile'],
@@ -50,5 +71,4 @@ export class UsersService {
   async delete(id: number): Promise<DeleteResult> {
     return await this.usersRepository.delete(id);
   }
-
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UserService } from '../user/user.service';
+import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { RedisCacheService } from '../redis-cache/redis-cache.service';
 import {
@@ -12,15 +12,15 @@ import {
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UserService,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly redisCacheService: RedisCacheService,
   ) {
     //
   }
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOneValidateUser(email);
     if (user && user.password === pass) {
       const { password, ...result } = user;
       return result;
