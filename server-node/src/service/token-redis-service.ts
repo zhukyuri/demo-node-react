@@ -35,8 +35,10 @@ class TokenRedisService {
     const isToken = await redis.get(token);
     if (!isToken) {
       if (expires) {
+        // @ts-ignore
         await redis.set(token, true, 'px', expires);
       } else {
+        // @ts-ignore
         await redis.set(token, true);
       }
     }

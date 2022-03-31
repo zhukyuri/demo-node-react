@@ -1,20 +1,19 @@
-import { Body, Controller, Get, Put } from '@nestjs/common';
+import { Body, Controller, Put } from '@nestjs/common';
 
 import { RedisCacheService } from './redis-cache.service';
 
 @Controller('/redis-test')
 export class RedisCacheController {
-  constructor(private readonly appService: RedisCacheService) {}
-
-  @Put()
-  async putHello(@Body() { name }: { name: string }): Promise<string> {
-    await this.appService.setHello(name);
-
-    return name;
+  constructor(private readonly appService: RedisCacheService) {
+    //
   }
 
-  @Get()
-  getHello(): Promise<string> {
-    return this.appService.getHello();
+  @Put()
+  async saveTokenRefresh(
+    @Body() { token }: { token: string },
+  ): Promise<string> {
+    await this.appService.setTokenRefresh(token);
+
+    return token;
   }
 }
