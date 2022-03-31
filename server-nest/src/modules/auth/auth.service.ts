@@ -3,7 +3,6 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { RedisCacheService } from '../redis-cache/redis-cache.service';
 import {
-  expiresAccessToken,
   expiresAccessTokenSrt,
   expiresRefreshToken,
   expiresRefreshTokenStr,
@@ -31,7 +30,10 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { username: user.username, sub: user.userId };
-    const accessToken = this.jwtService.sign(payload);
+    const accessToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET_ACCESS,
+      expiresIn: expiresAccessTokenSrt,
+    });
     const refreshToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET_REFRESH,
       expiresIn: expiresRefreshTokenStr,
