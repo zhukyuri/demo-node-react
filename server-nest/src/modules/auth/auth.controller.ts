@@ -23,6 +23,11 @@ export class AuthController {
     return this.authService.login(req, res);
   }
 
+  @Get('/refresh')
+  async refresh(@Request() req, @Response() res) {
+    return this.authService.refresh(req, res);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('/test')
   getProfile(@Req() req) {

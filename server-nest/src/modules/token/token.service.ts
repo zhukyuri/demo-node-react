@@ -26,22 +26,18 @@ export class TokenService {
   }
 
   validateAccessToken(token) {
-    try {
-      return this.jwtService.verify(token, {
-        secret: process.env.JWT_SECRET_ACCESS,
-      });
-    } catch (e) {
-      return null;
-    }
+    return this.jwtService.verify(token, {
+      secret: process.env.JWT_SECRET_ACCESS,
+    });
   }
 
   validateRefreshToken(token) {
-    try {
-      return this.jwtService.verify(token, {
-        secret: process.env.JWT_SECRET_REFRESH,
-      });
-    } catch (e) {
-      return null;
-    }
+    return this.jwtService.verify(token, {
+      secret: process.env.JWT_SECRET_REFRESH,
+    });
+  }
+
+  decodeToken(token) {
+    return this.jwtService.decode(token);
   }
 }

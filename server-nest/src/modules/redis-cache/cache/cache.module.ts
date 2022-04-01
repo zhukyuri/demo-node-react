@@ -19,7 +19,7 @@ import { Cache } from 'cache-manager';
           port: parseInt(process.env.DB_REDIS_PORT),
           db: parseInt(process.env.DB_REDIS_DB),
           password: process.env.DB_REDIS_PASSWORD,
-          keyPrefix: process.env.REDIS_PREFIX,
+          // keyPrefix: process.env.REDIS_PREFIX,
         };
       },
     }),
