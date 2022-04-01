@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import redis from '../redis/redis-cli';
+import redis from '../redis/redis-credentials';
 import { expiresAccessTokenSrt, expiresRefreshTokenStr } from '../configs/appConfigs';
 
 export interface Tokens {
@@ -35,8 +35,10 @@ class TokenRedisService {
     const isToken = await redis.get(token);
     if (!isToken) {
       if (expires) {
+        // @ts-ignore
         await redis.set(token, true, 'px', expires);
       } else {
+        // @ts-ignore
         await redis.set(token, true);
       }
     }

@@ -7,16 +7,17 @@ import { UsersModule } from '../users/users.module';
 import { ProfileModule } from '../profile/profile.module';
 import { RolesModule } from '../roles/roles.module';
 import { UserRolesModule } from '../user-roles/user-roles.module';
+import { RedisCacheModule } from '../redis-cache/redis-cache.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
     AuthModule,
-    // UserModule,
     UsersModule,
     ProfileModule,
     RolesModule,
     UserRolesModule,
+    RedisCacheModule,
   ],
   controllers: [AppController],
   providers: [AppService],
