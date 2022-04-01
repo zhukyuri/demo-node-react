@@ -2,7 +2,11 @@
 /dist
 /node_modules
 /temp
-.env*
+.env
+.env.prod
+.env.production
+.env.dev
+.env.development
 
 # Logs
 logs
