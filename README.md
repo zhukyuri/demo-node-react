@@ -49,10 +49,11 @@ Front-End Client is a simple ReactJS application.
     - NestJS
     - TypeORM
     - PostgreSQL
-    - migration DB
+    - Migration DB
     - JWT
-    - process environment
-    - cookies
+    - Process environment
+    - Cookies
+    - Redis cache
     - TypeScript
   - Controllers
   - Models
