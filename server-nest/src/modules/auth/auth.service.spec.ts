@@ -77,6 +77,8 @@ describe('validateLogin', () => {
   });
 
   it('should return JWT object when credentials are valid', async () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const res = await service.login({ username: 'maria', userId: 3 });
     expect(res.access_token).toBeDefined();
   });

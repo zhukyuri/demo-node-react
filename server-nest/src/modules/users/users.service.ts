@@ -41,10 +41,10 @@ export class UsersService {
     return new ResponseUsersDto(res);
   }
 
-  async findOneByUsername(username: string): Promise<ResponseUsersDto> {
+  async findOneByEmail(email: string): Promise<ResponseUsersDto> {
     const res = await this.usersRepository.findOne({
       where: {
-        username: username,
+        email,
       },
     });
 
@@ -53,8 +53,9 @@ export class UsersService {
 
   async findOneValidateUser(email: string): Promise<ValidateUsersDto> {
     const res = await this.usersRepository.findOne({
+      select: ['id', 'name', 'password', 'email'],
       where: {
-        email: email,
+        email,
       },
     });
 
@@ -64,7 +65,7 @@ export class UsersService {
   async findOneProfile(id: number): Promise<ResponseUsersDto> {
     return await this.usersRepository.findOne(id, {
       relations: ['profile'],
-      select: ['id', 'username', 'email', 'isActivate', 'createAt', 'updateAt'],
+      select: ['id', 'name', 'email', 'isActivate', 'createAt', 'updateAt'],
     });
   }
 

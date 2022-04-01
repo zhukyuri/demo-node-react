@@ -3,9 +3,8 @@ import { UsersService } from '../users/users.service';
 import { RedisCacheService } from '../redis-cache/redis-cache.service';
 import {
   expiresRefreshToken,
-  expiresRefreshTokenStr,
-  msecToMinute,
   msecToSecond,
+  nameAccessToken,
 } from '../../config/appConfigs';
 import { TokenService } from '../token/token.service';
 
@@ -19,8 +18,8 @@ export class AuthService {
     //
   }
 
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOneValidateUser(email);
+  async validateUser(username: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOneValidateUser(username);
     if (user && user.password === pass) {
       const { password, ...result } = user;
       return result;
@@ -28,24 +27,27 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+  async login(req, res): Promise<any> {
+    const userBody: any = req.body;
+    const user = await this.usersService.findOneByEmail(userBody.username);
+    const payload = { username: user.email, sub: user.id };
     const accessToken = this.tokenService.generateTokenAccess(payload);
     const refreshToken = this.tokenService.generateTokenRefresh(payload);
 
     await this.redisCacheService.saveTokenRefresh(
       refreshToken,
-      msecToSecond(expiresRefreshToken), // Note: Seconds
+      msecToSecond(expiresRefreshToken), // Note: Expires in Seconds
     );
 
-    console.log(
-      expiresRefreshToken,
-      msecToMinute(expiresRefreshToken),
-      expiresRefreshTokenStr,
-    );
+    res.set('Authorization', `Bearer ${refreshToken}`);
+    res.cookie(nameAccessToken, refreshToken, {
+      maxAge: expiresRefreshToken,
+      httpOnly: true,
+    });
 
-    return {
-      access_token: accessToken,
-    };
+    return res.send({
+      [nameAccessToken]: accessToken,
+      user,
+    });
   }
 }

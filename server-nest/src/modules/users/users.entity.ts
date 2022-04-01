@@ -15,7 +15,7 @@ export class Users extends DatesAt {
   id: number;
 
   @Column()
-  username: string;
+  name: string;
 
   @Column()
   email: string;
