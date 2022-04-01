@@ -1,17 +1,25 @@
-function day(days: number): number {
+export function dayToMsec(days: number): number {
   return days * 24 * 60 * 60 * 1000;
 }
 
-function minute(minutes: number): number {
+export function minuteToMsec(minutes: number): number {
   return minutes * 60 * 1000;
 }
 
-function minuteStr(mSec: number): string {
+export function msecToMinuteStr(mSec: number): string {
   return `${msecToMinute(mSec)}m`;
+}
+
+export function msecToSecondStr(mSec: number): string {
+  return `${msecToSecond(mSec)}s`;
 }
 
 export function msecToMinute(mSec: number): number {
   return mSec / 1000 / 60;
+}
+
+export function msecToSecond(mSec: number): number {
+  return mSec / 1000;
 }
 
 export const authTwoFactoring = false;
@@ -19,8 +27,8 @@ export const authTwoFactoring = false;
 export const nameAccessToken = 'token';
 export const nameRefreshToken = 'refreshToken';
 
-export const expiresAccessToken = minute(1);
-export const expiresAccessTokenSrt = minuteStr(expiresAccessToken);
+export const expiresAccessToken = minuteToMsec(1);
+export const expiresAccessTokenSrt = msecToSecondStr(expiresAccessToken);
 
-export const expiresRefreshToken = minute(10);
-export const expiresRefreshTokenStr = minuteStr(expiresRefreshToken);
+export const expiresRefreshToken = minuteToMsec(10);
+export const expiresRefreshTokenStr = msecToSecondStr(expiresRefreshToken);

@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { RedisCacheService } from '../redis-cache/redis-cache.service';
-import { expiresRefreshToken, msecToMinute } from '../../config/appConfigs';
+import {
+  expiresRefreshToken,
+  expiresRefreshTokenStr,
+  msecToMinute,
+  msecToSecond,
+} from '../../config/appConfigs';
 import { TokenService } from '../token/token.service';
 
 @Injectable()
@@ -30,10 +35,14 @@ export class AuthService {
 
     await this.redisCacheService.saveTokenRefresh(
       refreshToken,
-      msecToMinute(expiresRefreshToken),
+      msecToSecond(expiresRefreshToken), // Note: Seconds
     );
 
-    console.log(expiresRefreshToken, msecToMinute(expiresRefreshToken));
+    console.log(
+      expiresRefreshToken,
+      msecToMinute(expiresRefreshToken),
+      expiresRefreshTokenStr,
+    );
 
     return {
       access_token: accessToken,

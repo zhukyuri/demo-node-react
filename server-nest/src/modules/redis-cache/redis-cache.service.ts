@@ -8,11 +8,12 @@ export class RedisCacheService {
     //
   }
 
-  async setCache<T, V>(key: T, value: V, expires = 0): Promise<boolean> {
+  // Note: expires are in seconds
+  async setCache<T, V>(key: T, value: V, expires: number): Promise<boolean> {
     if (!expires) {
       await this.cache.set(key, value);
     } else {
-      await this.cache.set(key, value, { ttl: expires });
+      await this.cache.set(key, value, { ttl: expires * 10 });
     }
     return !!(await this.cache.get(key));
   }
