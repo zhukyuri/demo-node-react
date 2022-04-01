@@ -26,24 +26,6 @@ Front-End Client is a simple ReactJS application.
     - axios
     - TypeScript
 
-- ## /server-node
-  - Server REST API
-    - Node
-    - express
-    - Redis
-    - PostgreSQL
-    - Prisma ORM
-    - migration DB
-    - JWT token - access, refresh
-    - NodeMailer - for activation account
-    - process environment
-    - cookies
-    - TypeScript
-  - Controllers
-  - Models
-  - Services
-  - DTO
-
 - ## /server-nest (in progress)
   - Server REST API
     - NestJS
@@ -60,3 +42,21 @@ Front-End Client is a simple ReactJS application.
   - Services
   - DTO
   - Entity: Users, Profile, UserRoles, Roles
+
+- ## /server-node
+  - Server REST API
+    - Node
+    - Express
+    - Redis
+    - PostgreSQL
+    - Prisma ORM
+    - Migration DB
+    - JWT token - access, refresh
+    - NodeMailer - for activation account
+    - Process environment
+    - Cookies
+    - TypeScript
+  - Controllers
+  - Models
+  - Services
+  - DTO
