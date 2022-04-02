@@ -1,10 +1,10 @@
 import {
   Controller,
+  Delete,
   Get,
   Post,
   Req,
-  Request,
-  Response,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -19,17 +19,27 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async login(@Request() req, @Response() res) {
+  async login(@Req() req, @Res() res) {
     return this.authService.login(req, res);
   }
 
   @Get('/refresh')
-  async refresh(@Request() req, @Response() res) {
+  async refresh(@Req() req, @Res() res) {
     return this.authService.refresh(req, res);
   }
 
+  @Post('/logout')
+  async logout(@Req() req, @Res() res) {
+    return this.authService.logout(req, res);
+  }
+
+  @Delete('/delete/:userId')
+  async delete(@Req() req, @Res() res) {
+    return this.authService.delete(req, res);
+  }
+
   @UseGuards(JwtAuthGuard)
-  @Get('/test')
+  @Get('/test-guard')
   getProfile(@Req() req) {
     return req.user;
   }

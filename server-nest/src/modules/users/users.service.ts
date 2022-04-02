@@ -59,7 +59,7 @@ export class UsersService {
       },
     });
 
-    return new ValidateUsersDto(res);
+    return !res ? null : new ValidateUsersDto(res);
   }
 
   async findOneProfile(id: number): Promise<ResponseUsersDto> {
