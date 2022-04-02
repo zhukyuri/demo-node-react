@@ -21,7 +21,7 @@ export class AuthService {
     //
   }
 
-  private throwUnAuthorized(message: string): void {
+  throwUnAuthorized(message: string): void {
     throw new HttpException(message, HttpStatus.UNAUTHORIZED);
   }
 
@@ -72,7 +72,7 @@ export class AuthService {
 
     const userData: any = this.tokenService.decodeToken(refreshToken);
     const { email } = userData;
-    if (!email) this.throwUnAuthorized('Refresh: bad payload of token');
+    if (!email) this.throwUnAuthorized('Refresh: bad payload in token');
 
     const user = await this.usersService.findOneByEmail(email);
     if (!user) this.throwUnAuthorized('Refresh: user not found');

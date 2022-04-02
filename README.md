@@ -32,7 +32,7 @@ Front-End Client is a simple ReactJS application.
     - TypeORM
     - PostgreSQL
     - Migration DB
-    - JWT
+    - JWT, Passport-jwt, Passport-local
     - Process environment
     - Cookies
     - Redis cache
