@@ -41,8 +41,22 @@ export class AuthService {
     return null;
   }
 
+  async registration(req, res) {
+    // const { email, password, username } = req.body;
+    // const userData = await UserService.registration(email, password, username);
+    // res.cookie(nameRefreshToken, userData.refreshToken, {
+    //   maxAge: expiresRefreshToken,
+    //   httpOnly: true,
+    // });
+    // return res.json({x
+    //   ...new TokenDto(userData),
+    //   user: new UserDto({ ...userData.user }),
+    // });
+  }
+
   async login(req, res): Promise<any> {
     const userBody: any = req.body;
+    console.log(req.body);
     const user = await this.usersService.findOneByEmail(userBody.username);
     if (!user) this.throwUnAuthorized('Login: User not found');
 
@@ -103,10 +117,9 @@ export class AuthService {
   async delete(req, res) {
     const { params } = req;
     const userId = parseInt(params.userId);
-    res.clearCookie(nameRefreshToken);
     const resDel = await this.usersService.delete(userId);
     if (!resDel) this.throwDeleteAccount('Delete Account: Bad request');
-
-    return res.json({ delete: 'Ok' }).redirect(process.env.CLIENT_URL);
+    res.clearCookie(nameRefreshToken);
+    return res.send({ delete: 'Ok' });
   }
 }

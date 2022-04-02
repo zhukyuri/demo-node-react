@@ -23,6 +23,12 @@ export class AuthController {
     return this.authService.login(req, res);
   }
 
+  @UseGuards(LocalAuthGuard)
+  @Post('/registration')
+  async registration(@Req() req, @Res() res) {
+    return this.authService.registration(req, res);
+  }
+
   @Get('/refresh')
   async refresh(@Req() req, @Res() res) {
     return this.authService.refresh(req, res);
