@@ -19,7 +19,7 @@ Front-End Client is a simple ReactJS application.
 
 - ## /client
   - Simple React App
-    - RectJS
+    - ReactJS
     - MobX
     - Material UI
     - Formik
