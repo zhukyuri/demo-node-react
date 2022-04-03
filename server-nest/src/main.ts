@@ -9,6 +9,7 @@ import {
   expiresRefreshToken,
   msecToSecond,
 } from './config/appConfigs';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,10 +20,11 @@ async function bootstrap() {
       origin: process.env.CLIENT_URL,
     }),
   );
+  app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
     .setTitle('Demo-Code example of NestJS')
-    .setDescription('The cats API description')
+    .setDescription('The Demo-Code API of NestJS')
     .setVersion('1.0')
     .addTag('demo-code')
     .build();
@@ -30,7 +32,8 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document);
 
   await app.listen(process.env.NODE_PORT);
-  console.log(`\nServer run with port ${process.env.NODE_PORT}`);
+
+  console.log(`\nServer is running on: ${await app.getUrl()}`);
   console.log('\nCounts of processors:', os.cpus().length);
   console.log('\nCORS to:', process.env.CLIENT_URL);
   console.log(
