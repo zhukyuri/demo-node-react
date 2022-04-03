@@ -44,6 +44,8 @@ export class AuthController {
     return this.authService.delete(req, res);
   }
 
+  // TODO Should to add registration
+
   @UseGuards(JwtAuthGuard)
   @Get('/test-guard')
   getProfile(@Req() req) {

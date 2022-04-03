@@ -29,8 +29,8 @@ export class AuthService {
     throw new HttpException(message, HttpStatus.BAD_REQUEST);
   }
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOneValidateUser(username);
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOneValidateUser(email);
     if (!user) this.throwUnAuthorized('Login: User not found');
 
     if (user && user.password === pass) {
@@ -42,8 +42,8 @@ export class AuthService {
   }
 
   async registration(req, res) {
-    // const { email, password, username } = req.body;
-    // const userData = await UserService.registration(email, password, username);
+    // const { email, password, name } = req.body;
+    // const userData = await UserService.registration(email, password, name);
     // res.cookie(nameRefreshToken, userData.refreshToken, {
     //   maxAge: expiresRefreshToken,
     //   httpOnly: true,
@@ -56,8 +56,7 @@ export class AuthService {
 
   async login(req, res): Promise<any> {
     const userBody: any = req.body;
-    console.log(req.body);
-    const user = await this.usersService.findOneByEmail(userBody.username);
+    const user = await this.usersService.findOneByEmail(userBody.email);
     if (!user) this.throwUnAuthorized('Login: User not found');
 
     const payload: PayloadToken = { email: user.email, sub: user.id };
