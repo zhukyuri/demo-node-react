@@ -37,11 +37,11 @@ export class RedisCacheService {
     return await this.setCache(token, true, expires);
   }
 
-  async readTokenRefresh(token: string): Promise<string> {
+  async readToken(token: string): Promise<string> {
     return await this.getCache(token);
   }
 
-  async delTokenRefresh(token: string): Promise<boolean> {
+  async delToken(token: string): Promise<boolean> {
     return await this.delCache(token);
   }
 }

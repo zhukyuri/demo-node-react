@@ -35,22 +35,25 @@ export class UsersService {
     return res.map((i) => new ResponseUsersDto(i));
   }
 
+  // TODO add <ResponseUsersDto | null> to type
   async findOne(id: number): Promise<ResponseUsersDto> {
     const res = await this.usersRepository.findOne(id);
 
     return new ResponseUsersDto(res);
   }
 
-  async findOneByEmail(email: string): Promise<ResponseUsersDto> {
+  // TODO add <ResponseUsersDto | null> to type
+  async findOneByEmail(email: string): Promise<ResponseUsersDto | null> {
     const res = await this.usersRepository.findOne({
       where: {
         email,
       },
     });
 
-    return new ResponseUsersDto(res);
+    return !res ? null : new ResponseUsersDto(res);
   }
 
+  // TODO add <ResponseUsersDto | null> to type
   async findOneValidateUser(email: string): Promise<ValidateUsersDto> {
     const res = await this.usersRepository.findOne({
       select: ['id', 'name', 'password', 'email'],
@@ -59,9 +62,10 @@ export class UsersService {
       },
     });
 
-    return new ValidateUsersDto(res);
+    return !res ? null : new ValidateUsersDto(res);
   }
 
+  // TODO add <ResponseUsersDto | null> to type
   async findOneProfile(id: number): Promise<ResponseUsersDto> {
     return await this.usersRepository.findOne(id, {
       relations: ['profile'],
