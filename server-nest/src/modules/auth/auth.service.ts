@@ -8,6 +8,7 @@ import {
   nameRefreshToken,
 } from '../../config/appConfigs';
 import { TokenService } from '../token/token.service';
+import { CreateUsersDto } from '../users/dto/create-users.dto';
 
 type PayloadToken = null | { email: string; sub: number };
 
@@ -42,8 +43,8 @@ export class AuthService {
     return null;
   }
 
-  async registration(req, res) {
-    const { email, password, name } = req.body;
+  async registration(createUserDto, res) {
+    const { email, password, name } = createUserDto;
 
     if (!name) this.throwUnAuthorized('Registration: Name is empty.');
 

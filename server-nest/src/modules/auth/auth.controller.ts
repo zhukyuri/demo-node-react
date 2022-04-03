@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -10,6 +11,7 @@ import {
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { CreateUsersDto } from '../users/dto/create-users.dto';
 
 @Controller('/api')
 export class AuthController {
@@ -25,8 +27,8 @@ export class AuthController {
 
   // @UseGuards(LocalAuthGuard)
   @Post('/registration')
-  async registration(@Req() req, @Res() res) {
-    return this.authService.registration(req, res);
+  async registration(@Body() createUserDto: CreateUsersDto, @Res() res) {
+    return this.authService.registration(createUserDto, res);
   }
 
   @Get('/refresh')
