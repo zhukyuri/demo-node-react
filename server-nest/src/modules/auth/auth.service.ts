@@ -34,6 +34,7 @@ export class AuthService {
     if (!user) this.throwUnAuthorized('Login: User not found');
 
     if (user && user.password === pass) {
+      // TODO Should Use DTO
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
       return result;
@@ -42,21 +43,42 @@ export class AuthService {
   }
 
   async registration(req, res) {
-    // const { email, password, name } = req.body;
-    // const userData = await UserService.registration(email, password, name);
-    // res.cookie(nameRefreshToken, userData.refreshToken, {
-    //   maxAge: expiresRefreshToken,
-    //   httpOnly: true,
-    // });
-    // return res.json({x
-    //   ...new TokenDto(userData),
-    //   user: new UserDto({ ...userData.user }),
-    // });
+    const { email, password, name } = req.body;
+
+    if (!name) this.throwUnAuthorized('Registration: Name is empty.');
+
+    const user = await this.usersService.findOneByEmail(email);
+    if (user) this.throwUnAuthorized('Registration: The user already exists.');
+
+    const newUser = await this.usersService.create({ email, password, name });
+    if (!newUser)
+      this.throwUnAuthorized(
+        'Registration: A bad request to DB creates a user.',
+      );
+
+    const payload: PayloadToken = { email: newUser.email, sub: newUser.id };
+    const accessToken = this.tokenService.generateTokenAccess(payload);
+    const refreshToken = this.tokenService.generateTokenRefresh(payload);
+
+    await this.redisCacheService.saveTokenRefresh(
+      refreshToken,
+      msecToSecond(expiresRefreshToken), // Note: Expires in Seconds
+    );
+
+    res.cookie(nameRefreshToken, refreshToken, {
+      maxAge: expiresRefreshToken,
+      httpOnly: true,
+    });
+
+    return res.send({
+      [nameAccessToken]: accessToken,
+      newUser,
+    });
   }
 
   async login(req, res): Promise<any> {
-    const userBody: any = req.body;
-    const user = await this.usersService.findOneByEmail(userBody.email);
+    const { email } = req.body;
+    const user = await this.usersService.findOneByEmail(email);
     if (!user) this.throwUnAuthorized('Login: User not found');
 
     const payload: PayloadToken = { email: user.email, sub: user.id };

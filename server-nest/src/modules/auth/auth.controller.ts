@@ -23,7 +23,7 @@ export class AuthController {
     return this.authService.login(req, res);
   }
 
-  @UseGuards(LocalAuthGuard)
+  // @UseGuards(LocalAuthGuard)
   @Post('/registration')
   async registration(@Req() req, @Res() res) {
     return this.authService.registration(req, res);
@@ -34,17 +34,17 @@ export class AuthController {
     return this.authService.refresh(req, res);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/logout')
   async logout(@Req() req, @Res() res) {
     return this.authService.logout(req, res);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/delete/:userId')
   async delete(@Req() req, @Res() res) {
     return this.authService.delete(req, res);
   }
-
-  // TODO Should to add registration
 
   @UseGuards(JwtAuthGuard)
   @Get('/test-guard')
