@@ -21,8 +21,7 @@ export class UsersService {
   }
 
   async update(id: number, dataUserDto: UpdateUsersDto): Promise<Users> {
-    const user = new UpdateUsersDto(dataUserDto);
-    await this.usersRepository.update(id, user);
+    await this.usersRepository.update(id, dataUserDto);
 
     return await this.usersRepository.findOne(id);
   }

@@ -1,11 +1,12 @@
-export class UpdateUsersDto {
-  public name?: string;
-  public email?: string;
-  public password?: string;
+import { IsNotEmpty, Length, MaxLength, MinLength } from 'class-validator';
 
-  constructor(payload) {
-    if (payload.name) this.name = payload.name;
-    // if (payload.email) this.email = payload.email;  // TODO Email should not be updated
-    if (payload.password) this.password = payload.password;
-  }
+export class UpdateUsersDto {
+  @Length(8, 50)
+  @IsNotEmpty()
+  public name?: string;
+
+  @MinLength(5)
+  @MaxLength(20)
+  @IsNotEmpty()
+  public password?: string;
 }
