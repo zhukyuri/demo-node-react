@@ -12,7 +12,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-  const whitelist = ['localhost', 'api.localhost.com'];
+  const whitelist = ['http://localhost:3007', 'http://localhost:3000'];
   app.enableCors({
     origin: (origin, callback) => {
       if (!origin || whitelist.indexOf(origin) !== -1) {
