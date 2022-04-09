@@ -27,8 +27,8 @@ export const authTwoFactoring = false;
 export const nameAccessToken = 'token';
 export const nameRefreshToken = 'refreshToken';
 
-export const expiresAccessToken = minuteToMsec(1);
+export const expiresAccessToken = minuteToMsec(60);
 export const expiresAccessTokenSrt = msecToSecondStr(expiresAccessToken);
 
-export const expiresRefreshToken = minuteToMsec(10);
+export const expiresRefreshToken = minuteToMsec(24 * 60);
 export const expiresRefreshTokenStr = msecToSecondStr(expiresRefreshToken);
