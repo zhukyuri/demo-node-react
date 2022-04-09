@@ -8,7 +8,6 @@ import {
   nameRefreshToken,
 } from '../../config/appConfigs';
 import { TokenService } from '../token/token.service';
-import { CreateUsersDto } from '../users/dto/create-users.dto';
 
 type PayloadToken = null | { email: string; sub: number };
 
@@ -104,6 +103,7 @@ export class AuthService {
 
   async refresh(req, res) {
     const { refreshToken } = req.cookies;
+    console.log('refreshToken', refreshToken);
     if (!refreshToken) this.throwUnAuthorized('Refresh: Token not found');
 
     const isValid = await this.tokenService.validateRefreshToken(refreshToken);

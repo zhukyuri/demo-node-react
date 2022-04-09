@@ -12,14 +12,9 @@ import {
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
+  app.enableCors();
   app.use(cookieParser());
-  app.use(
-    cors({
-      credentials: true,
-      origin: process.env.CLIENT_URL,
-    }),
-  );
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
