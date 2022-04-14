@@ -3,25 +3,30 @@ import * as cookieParser from 'cookie-parser';
 import * as os from 'os';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './modules/app/app.module';
+import { ValidationPipe } from '@nestjs/common';
 import {
+  corsList,
   expiresAccessToken,
   expiresRefreshToken,
+  msecToMinute,
   msecToSecond,
 } from './config/appConfigs';
-import { ValidationPipe } from '@nestjs/common';
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || corsList.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  credentials: true,
+};
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
-  const whitelist = ['http://localhost:3007', 'http://localhost:3000'];
-  app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin || whitelist.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-  });
+  const app = await NestFactory.create(AppModule);
+  app.enableCors(corsOptions);
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
 
@@ -38,11 +43,13 @@ async function bootstrap() {
 
   console.log(`\nServer is running on: ${await app.getUrl()}`);
   console.log('\nCounts of processors:', os.cpus().length);
-  console.log('\nCORS to:', process.env.CLIENT_URL);
+  console.log('\nCORS List:', JSON.stringify(corsList, null, 2));
   console.log(
     `\nTokens expires:\n  access = ${msecToSecond(
       expiresAccessToken,
-    )}s\n  refresh: ${msecToSecond(expiresRefreshToken)}s`,
+    )}s (${msecToMinute(expiresAccessToken)}m)\n  refresh: ${msecToSecond(
+      expiresRefreshToken,
+    )}s (${msecToMinute(expiresRefreshToken)}m)`,
   );
 }
 

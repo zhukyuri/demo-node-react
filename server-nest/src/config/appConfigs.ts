@@ -1,3 +1,5 @@
+// TOKENS
+
 export function dayToMsec(days: number): number {
   return days * 24 * 60 * 60 * 1000;
 }
@@ -32,3 +34,7 @@ export const expiresAccessTokenSrt = msecToSecondStr(expiresAccessToken);
 
 export const expiresRefreshToken = minuteToMsec(24 * 60);
 export const expiresRefreshTokenStr = msecToSecondStr(expiresRefreshToken);
+
+// CORS
+
+export const corsList = ['http://localhost:3007', 'http://localhost:3000'];
