@@ -37,4 +37,8 @@ export const expiresRefreshTokenStr = msecToSecondStr(expiresRefreshToken);
 
 // CORS
 
-export const corsList = ['http://localhost:3007', 'http://localhost:3000'];
+export const corsList = [
+  'http://localhost:3007',
+  'http://localhost:3000',
+  'http://dev.api-nest.queuemy.com',
+];
