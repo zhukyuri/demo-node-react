@@ -25,7 +25,7 @@ const corsOptions = {
 };
 
 async function bootstrap() {
-  console.log('\nDB\n', process.env.DB_POSTGRES_DATABASE)
+  console.log('\nDB\n', process.env.DB_POSTGRES_DATABASE);
   const app = await NestFactory.create(AppModule);
   app.enableCors(corsOptions);
   app.use(cookieParser());
