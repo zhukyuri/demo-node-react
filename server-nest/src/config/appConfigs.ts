@@ -40,5 +40,8 @@ export const expiresRefreshTokenStr = msecToSecondStr(expiresRefreshToken);
 export const corsList = [
   'http://localhost:3007',
   'http://localhost:3000',
-  'http://dev.api-nest.queuemy.com',
+  'http://queuemy.com',
+  'https://queuemy.com',
+  'http://dev.queuemy.com',
+  'https://dev.queuemy.com',
 ];
