@@ -12,9 +12,11 @@ Front-End Client is a simple ReactJS application.
 # Structure of Demo Project.
 ```
 + demo-node-react
-- + client              // React App.
-- + server-node         // Node, PostgreSQL, Prisma ORM, Redis, JWT.
-- + server-nest         // Nest, PostgreSQL, TypeOrm, Authentication JWT Strategy.(In progress)
+- + client                        // React App.
+- + server-node                   // Node, PostgreSQL, Prisma ORM, Redis, JWT.
+- + server-nest                   // Nest, PostgreSQL, TypeOrm, Authentication JWT Strategy.(In progress)
+- + server-mongo-simple           // Mode, Mongoose, ...
+- + server-postgre-prisma-simple  // Node, PostgreSQL, ...
 ```
 
 - ## /client
